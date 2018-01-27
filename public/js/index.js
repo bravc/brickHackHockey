@@ -148,8 +148,6 @@ $(document).ready(function() {
     canvas = document.getElementById("gameBoard");
     ctx = canvas.getContext("2d");
 
-    conn.emit("hello");
-
     //scale the canvas properly
     scaleCanvas(canvas, ctx, aspectRatio()[0], aspectRatio()[1]);
 

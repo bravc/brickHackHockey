@@ -1,5 +1,5 @@
-var connUrl = "/"
-let conn = io();
+var socUrl = "/"
+let soc = io();
 
 
 $(document).ready(function() {
@@ -37,7 +37,7 @@ $(document).ready(function() {
      * then display it
      */
     createBtn.on('click', function(){
-        conn.emit("ADD_ROOM", displayRoomID);
+        soc.emit("ADD_ROOM", displayRoomID);
     });
 
     /**
@@ -48,22 +48,22 @@ $(document).ready(function() {
      */
     joinBtn.on('click', function(){
         if(roomID.val() != ''){
-            conn.emit("CONNECT_ROOM", roomID.val(), hideForm);
+            soc.emit("socECT_ROOM", roomID.val(), hideForm);
         }else{
             alert("User does not exist!")
         }
     });
 
 
-    conn.on('connect', function(){
-        console.log('Connected...');
+    soc.on('socect', function(){
+        console.log('socected...');
     });
 
     /**
      * When both parties have joined,
      * hide the menu
      */
-    conn.on("ENTER_GAME", function(){
+    soc.on("ENTER_GAME", function(){
         blur.hide();
     });
 
