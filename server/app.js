@@ -1,16 +1,19 @@
 const express = require('express');
 
 const app = express();
-
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 const PORT = process.env.PORT || 3000;
 
+app.use(express.static(__dirname + '/../public'));
 
 
-app.listen(PORT, function(){
+server.listen(PORT, function(){
     console.log('Server started on port ' + PORT + '...');
 });
 
 
-app.get('/', function(req, res){
-    res.send('Hello world!');
+io.on('connection', function(socket){
+    console.log('Connected to socket ' + socket.id);
+    
 });
