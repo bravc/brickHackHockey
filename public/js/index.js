@@ -1,6 +1,5 @@
 var pixelRatio = window.devicePixelRatio;
-const socketUrl = "/" 
-const socket = io();
+
 
 $(document).ready(function() {
     var canvas = document.getElementById("gameBoard");
@@ -11,9 +10,7 @@ $(document).ready(function() {
 	resizeCanvas();
 });
 
-socket.on('connect', function(){
-	console.log('Connected...'); 
-});
+
 
 
 
