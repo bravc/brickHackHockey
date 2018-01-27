@@ -108,11 +108,22 @@ class Paddle {
         this.radius = 40;
     }
     setPos(x, y){
+    	if(x > canvas.width / devicePixelRatio - this.radius - 2){
+    		x = canvas.width / devicePixelRatio - this.radius - 2;
+    	}
+    	else if(x < this.radius + 2){
+    		x = this.radius + 2;
+    	}
+
     	this.x = x;
 
     	if(y < canvas.height / devicePixelRatio / 2 + this.radius){
     		y = canvas.height / devicePixelRatio / 2 + this.radius;
     	}
+		else if(y > canvas.height / devicePixelRatio - this.radius){
+    		y = canvas.height / devicePixelRatio - this.radius;
+    	}
+
 		this.y = y;
 		soc.emit("MOVE_PUCK", x, y);
     }
