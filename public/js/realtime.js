@@ -23,10 +23,10 @@ $(document).ready(function() {
      * Callback used by server to either hide div or alert of error
      */
     hideForm = (roomExists) => {
-        if(roomExists){
+        if(roomExists === ""){
             blur.hide();
         }else{
-            alert("Room is full!");
+            alert(roomExists);
             roomID.attr('value', '');
         }
     }
