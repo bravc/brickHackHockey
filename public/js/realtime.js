@@ -48,15 +48,15 @@ $(document).ready(function() {
      */
     joinBtn.on('click', function(){
         if(roomID.val() != ''){
-            soc.emit("socECT_ROOM", roomID.val(), hideForm);
+            soc.emit("CONNECT_ROOM", roomID.val(), hideForm);
         }else{
             alert("User does not exist!")
         }
     });
 
 
-    soc.on('socect', function(){
-        console.log('socected...');
+    soc.on('connect', function(){
+        console.log('Connected...');
     });
 
     /**
