@@ -213,14 +213,15 @@ function drawHockeyRink() {
     //white background
     ctx.strokeStyle = "rgb(255, 0, 0)";
     ctx.fillStyle = "#FFFFFF";
-    roundRect(ctx, 2, 2, canvas.width / devicePixelRatio - 4, canvas.height / devicePixelRatio - 4, 20, true, true);
+    ctx.lineWidth = 100;
+    roundRect(ctx, 2, 2, canvas.width / devicePixelRatio - 4, canvas.height / devicePixelRatio - 4, 25, true, true);
 
+    ctx.lineWidth = 2;
 
     //centerline
     ctx.moveTo(0, canvas.height / devicePixelRatio / 2);
     ctx.lineTo(canvas.width / devicePixelRatio, canvas.height / devicePixelRatio / 2);
     ctx.stroke();
-
 
     //paddle color
     ctx.fillStyle = "#000000";
