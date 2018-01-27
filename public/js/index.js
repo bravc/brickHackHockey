@@ -5,6 +5,7 @@ var canvas;
 var ctx;
 var timer;
 
+//makes the canvas scale right for retina devices
 function scaleCanvas(canvas, context, width, height) {
   // assume the device pixel ratio is 1 if the browser doesn't specify it
   const devicePixelRatio = window.devicePixelRatio || 1;
@@ -29,7 +30,7 @@ function scaleCanvas(canvas, context, width, height) {
     // ...then scale it back down with CSS
     canvas.style.width = width + 'px';
     canvas.style.height = height + 'px';
-}
+  }
 else {
     // this is a normal 1:1 device; just scale it simply
     canvas.width = width;
@@ -126,12 +127,13 @@ function getTouchPos(canvasDom, touchEvent) {
  		$("#blur").hide();
  	}
 
- 	timer=setInterval(drawHockeyRink, 10);
+ 	timer=setInterval(drawHockeyRink, 1);
 
 
  	 // Set up touch events for mobile, etc
  	 canvas.addEventListener("touchstart", function (e) {
  	 	mousePos = getTouchPos(canvas, e);
+ 	 	e.preventDefault();
  	 	//var touch = e.touches[0];
  	 	//var mouseEvent = new MouseEvent("mousedown", {
  	 		//clientX: touch.clientX,
