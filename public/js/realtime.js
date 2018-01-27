@@ -16,7 +16,7 @@ $(document).ready(function() {
 
     joinBtn.on('click', function(){        
         if(roomID.val() != ''){
-            socket.emit("ROOM_CONNECT", )
+            socket.emit("ROOM_CONNECT", roomID.val())
         }else{  
             alert("User does not exist!")
         }
