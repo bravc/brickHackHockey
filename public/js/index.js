@@ -107,6 +107,7 @@ class Paddle {
         this.y = y;
         this.player = player;
         this.radius = 40;
+        this.score = 0;
     }
     setPos(x, y){
     	if(x > canvas.width / devicePixelRatio - this.radius - 2){
@@ -121,8 +122,8 @@ class Paddle {
     	if(y < canvas.height / devicePixelRatio / 2 + this.radius){
     		y = canvas.height / devicePixelRatio / 2 + this.radius;
     	}
-		else if(y > canvas.height / devicePixelRatio - this.radius){
-    		y = canvas.height / devicePixelRatio - this.radius;
+		else if(y > canvas.height / devicePixelRatio - this.radius - 2){
+    		y = canvas.height / devicePixelRatio - this.radius - 2;
     	}
 
 		this.y = y;
@@ -271,8 +272,8 @@ function drawHockeyRink() {
 	ctx.textAlign = "center";
 	ctx.font = "30px Arial";
 	ctx.fillStyle = "#000000";
-	ctx.fillText("0", normalizedHeight / 2 - 20, 10); //player 1
-	ctx.fillText("0", normalizedHeight / 2 + 20, 10); //player 2
+	ctx.fillText(player1Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 1
+	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 + 20, 10); //player 2
 	ctx.restore();
 
     //paddle color
