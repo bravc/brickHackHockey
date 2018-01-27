@@ -71,4 +71,9 @@ $(document).ready(function() {
         player2Paddle.setPos(x, y);
     });
 
+    soc.on("EXIT_ROOM", function(){
+        alert("User left!");
+        blur.show();
+    });
+
 });
