@@ -13,7 +13,9 @@ $(document).ready(function() {
 
 
     displayRoomID = (roomID) => {
-        display.attr('value', roomID);
+        console.log("Got here");
+        
+        display.text(roomID);
     }
 
     createBtn.on('click', function(){

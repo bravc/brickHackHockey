@@ -20,11 +20,12 @@ io.on('connection', function(socket){
     console.log('Connected to socket ' + socket.id);
     connectedUsers[uuid()] = socket.id;
 
-    socket.on('ADD_ROOM', function(){
+    socket.on('ADD_ROOM', function(callback){
         let roomID = uuid();
         openRooms.push(roomID);
         socket.join(roomID);
         console.log(roomID);
+        callback(roomID);
     });
 
     socket.on('CONNECT_ROOM', function(roomID){
