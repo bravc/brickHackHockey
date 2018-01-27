@@ -32,6 +32,7 @@ io.on('connection', function(socket){
         if (openRooms.includes(roomID)) {
             socket.join(roomID);
             console.log("Joining room: " + roomID);
+            socket.to(roomID).emit("ENTER_GAME");
         } else {
             console.log(roomID + " is an invalid roomID");
         }
