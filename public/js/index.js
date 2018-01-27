@@ -102,9 +102,10 @@ function backingScale(context) {
 
 //represents a paddle
 class Paddle {
-    constructor(x, y) {
+    constructor(x, y, player) {
         this.x = x;
         this.y = y;
+        this.player = player;
         this.radius = 40;
     }
     setPos(x, y){
@@ -164,10 +165,10 @@ $(document).ready(function() {
     scaleCanvas(canvas, ctx, aspectRatio()[0], aspectRatio()[1]);
 
     //make the player 1 paddle
-    player1Paddle = new Paddle(canvas.width / devicePixelRatio / 2, canvas.height / devicePixelRatio - 100);
+    player1Paddle = new Paddle(canvas.width / devicePixelRatio / 2, canvas.height / devicePixelRatio - 100, 1);
 
     //make the opponent paddle
-    player2Paddle = new Paddle(canvas.width / devicePixelRatio / 2, 100);
+    player2Paddle = new Paddle(canvas.width / devicePixelRatio / 2, 100, 2);
 
     //puck
     puck = new Puck(canvas.width / devicePixelRatio / 2, canvas.height / devicePixelRatio / 2);
