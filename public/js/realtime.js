@@ -7,11 +7,17 @@ $(document).ready(function() {
 
     let roomID = $('#roomID'),
         createBtn = $('#createRoomButton'),
-        joinBtn = $('#roomEnterButton');
+        joinBtn = $('#roomEnterButton'),
+        display = $('#currRoomID');
 
+
+
+    displayRoomID = (roomID) => {
+        display.attr('value', roomID);
+    }
 
     createBtn.on('click', function(){
-        socket.emit("ADD_ROOM");
+        socket.emit("ADD_ROOM", displayRoomID);
     });
 
     joinBtn.on('click', function(){        
