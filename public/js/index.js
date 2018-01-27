@@ -1,5 +1,5 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = false;
+let devMode = true;
 
 //const socket = require('./realtime');
 
