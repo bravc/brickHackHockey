@@ -8,11 +8,11 @@ body{
 }
 
 #blur{
-	-webkit-filter: blur(5px);
+	/*-webkit-filter: blur(5px);
 	-moz-filter: blur(5px);
 	-o-filter: blur(5px);
 	-ms-filter: blur(5px);
-	filter: blur(5px);
+	filter: blur(5px);*/
 	height: 100%;
 	width: 100%;
 	position: absolute;
@@ -29,6 +29,8 @@ body{
 
 #welcomeMessage{
 	margin: auto;
+	color: white;
+	text-align: center;
 }
 
 #field{
@@ -36,6 +38,10 @@ body{
 	width: 50%;
 	margin: auto;
 	transform: translateY(50%);
+}
+
+button{
+	margin-top: 50px;
 }
 
 #gameBoard{
