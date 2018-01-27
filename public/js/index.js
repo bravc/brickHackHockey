@@ -206,7 +206,7 @@ function aspectRatio() {
     let height = $("body").height();
     let ratio = width / height;
 
-    let destinationRatio = 94 / 100;
+    let destinationRatio = 96 / 100;
 
     if (ratio == destinationRatio) {
         return [width, height];
