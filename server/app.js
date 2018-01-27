@@ -35,7 +35,7 @@ io.on('connection', function(socket){
 
     /**
      * Attempt to connect to the room, if it's full
-     * alert the client. Otherwise, join the room 
+     * alert the client. Otherwise, join the room
      * and enter the game
      */
     socket.on('CONNECT_ROOM', function(roomID, callback){
@@ -45,13 +45,13 @@ io.on('connection', function(socket){
                 socket.join(roomID);
                 console.log("Joining room: " + roomID);
                 socket.to(roomID).emit("ENTER_GAME");
-                callback(true);
+                callback('');
             }else{
-                callback(false);
+                callback('Room is full!');
             }
         } else {
             console.log(roomID + " is an invalid roomID");
-            callback(false);
+            callback('Room does not exist!');
         }
     });
 
