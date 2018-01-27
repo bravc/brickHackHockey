@@ -85,6 +85,7 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
     if (fill) {
         ctx.fill();
     }
+
 }
 
 
@@ -107,11 +108,22 @@ class Paddle {
         this.radius = 40;
     }
     setPos(x, y){
+    	if(x > canvas.width / devicePixelRatio - this.radius - 2){
+    		x = canvas.width / devicePixelRatio - this.radius - 2;
+    	}
+    	else if(x < this.radius + 2){
+    		x = this.radius + 2;
+    	}
+
     	this.x = x;
 
-    	if(y < canvas.height / devicePixelRatio / 2){
-    		y = canvas.height / devicePixelRatio / 2 - radius;
+    	if(y < canvas.height / devicePixelRatio / 2 + this.radius){
+    		y = canvas.height / devicePixelRatio / 2 + this.radius;
     	}
+		else if(y > canvas.height / devicePixelRatio - this.radius){
+    		y = canvas.height / devicePixelRatio - this.radius;
+    	}
+
 		this.y = y;
 		soc.emit("MOVE_PUCK", x, y);
     }
@@ -208,19 +220,47 @@ function aspectRatio() {
 
 function drawHockeyRink() {
 
+	let normalizedWidth = canvas.width / devicePixelRatio;
+	let normalizedHeight = canvas.height / devicePixelRatio;
+
     //draw in arena
 
     //white background
-    ctx.strokeStyle = "rgb(255, 0, 0)";
+    ctx.strokeStyle = "#FF0000";
     ctx.fillStyle = "#FFFFFF";
-    roundRect(ctx, 2, 2, canvas.width / devicePixelRatio - 4, canvas.height / devicePixelRatio - 4, 20, true, true);
+    ctx.lineWidth = 4;
+    roundRect(ctx, 2, 2, normalizedWidth - 4, normalizedHeight - 4, 25, true, true);
 
+    let goalStart = normalizedWidth / 4;
+    let goalEnd = normalizedWidth / 4 * 3;
+
+    ctx.strokeStyle = "#FFFFFF";
+
+
+    //player 1 goal line
+    ctx.beginPath();
+    ctx.moveTo(goalStart, normalizedHeight - 2);
+    ctx.lineTo(goalEnd, normalizedHeight - 2);
+    ctx.stroke();
+    ctx.closePath();
+
+    //player 2 goal line
+    ctx.beginPath();
+    ctx.moveTo(goalStart, 0);
+    ctx.lineTo(goalEnd, 0);
+    ctx.stroke();
+    ctx.closePath();
+
+
+    ctx.strokeStyle = "#FF0000";
+    ctx.lineWidth = 2;
 
     //centerline
-    ctx.moveTo(0, canvas.height / devicePixelRatio / 2);
-    ctx.lineTo(canvas.width / devicePixelRatio, canvas.height / devicePixelRatio / 2);
+    ctx.beginPath()
+    ctx.moveTo(0, normalizedHeight / 2);
+    ctx.lineTo(normalizedWidth, normalizedHeight / 2);
     ctx.stroke();
-
+    ctx.closePath();
 
     //paddle color
     ctx.fillStyle = "#000000";
@@ -229,11 +269,13 @@ function drawHockeyRink() {
     ctx.beginPath();
     ctx.arc(player1Paddle.x, player1Paddle.y, player1Paddle.radius, 0, 2 * Math.PI);
     ctx.fill();
+    ctx.closePath();
 
     //player 2 paddle
     ctx.beginPath();
     ctx.arc(player2Paddle.x, player2Paddle.y, player2Paddle.radius, 0, 2 * Math.PI);
     ctx.fill();
+    ctx.closePath();
 
     //puck color
     ctx.fillStyle = "blue";
@@ -242,6 +284,7 @@ function drawHockeyRink() {
     ctx.beginPath();
     ctx.arc(puck.x, puck.y, puck.radius, 0, 2 * Math.PI);
     ctx.fill();
+    ctx.closePath();
 }
 
 
