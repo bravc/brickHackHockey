@@ -82,6 +82,8 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
     }
 }
 
+
+//get the proper scale for all retina devices
 function backingScale(context) {
     if ('devicePixelRatio' in window) {
         if (window.devicePixelRatio > 1) {
@@ -91,6 +93,8 @@ function backingScale(context) {
     return 1;
 }
 
+
+//represents a paddle
 class Paddle {
     constructor(x, y) {
         this.x = x;
@@ -115,16 +119,22 @@ $(document).ready(function() {
     canvas = document.getElementById("gameBoard");
     ctx = canvas.getContext("2d");
 
+    //scale the canvas properly
     scaleCanvas(canvas, ctx, aspectRatio()[0], aspectRatio()[1]);
 
+    //make the player 1 paddle
     player1Paddle = new Paddle(canvas.width / devicePixelRatio / 2, canvas.height / devicePixelRatio - 100);
 
+    //make the opponent paddle
     player2Paddle = new Paddle(canvas.width / devicePixelRatio / 2, 100);
 
+    //hide the login form inititally
     if (devMode) {
         $("#blur").hide();
     }
 
+
+    //start the canvas updates
     timer = setInterval(drawHockeyRink, 1);
 
 
@@ -132,12 +142,6 @@ $(document).ready(function() {
     canvas.addEventListener("touchstart", function(e) {
         mousePos = getTouchPos(canvas, e);
         e.preventDefault();
-        //let touch = e.touches[0];
-        //let mouseEvent = new MouseEvent("mousedown", {
-        //clientX: touch.clientX,
-        //clientY: touch.clientY
-        //});
-        //canvas.dispatchEvent(mouseEvent);
     }, false);
     canvas.addEventListener("touchend", function(e) {
         //let mouseEvent = new MouseEvent("mouseup", {});
