@@ -67,4 +67,8 @@ $(document).ready(function() {
         blur.hide();
     });
 
+    soc.on("OPPONENT_PUCK_MOVE", function(x, y){
+        player2Paddle.setPos(x, y);
+    });
+
 });

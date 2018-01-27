@@ -112,7 +112,8 @@ class Paddle {
     	if(y < canvas.height / devicePixelRatio / 2){
     		y = canvas.height / devicePixelRatio / 2 - radius;
     	}
-    	this.y = y;
+		this.y = y;
+		soc.emit("MOVE_PUCK", x, y);
     }
 }
 
