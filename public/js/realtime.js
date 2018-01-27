@@ -41,17 +41,14 @@ $(document).ready(function() {
         socket.emit("ADD_ROOM", displayRoomID);
     });
 
-<<<<<<< HEAD
     joinBtn.on('click', function(){
-=======
     /**
      * When join button clicked,
      * check if if input was not empty
      * and then tell the server to join the
      * room
      */
-    joinBtn.on('click', function(){        
->>>>>>> 8f098c40e6ed96038a387b29ef7405dcf56dc446
+    joinBtn.on('click', function(){
         if(roomID.val() != ''){
             socket.emit("CONNECT_ROOM", roomID.val(), hideForm);
         }else{
@@ -65,7 +62,7 @@ $(document).ready(function() {
     });
 
     /**
-     * When both parties have joined, 
+     * When both parties have joined,
      * hide the menu
      */
     socket.on("ENTER_GAME", function(){
