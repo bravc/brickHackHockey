@@ -209,12 +209,18 @@ function aspectRatio() {
 
 function drawHockeyRink() {
 
-    // draw in arena
+    //draw in arena
 
     //white background
     ctx.strokeStyle = "rgb(255, 0, 0)";
     ctx.fillStyle = "#FFFFFF";
     roundRect(ctx, 2, 2, canvas.width / devicePixelRatio - 4, canvas.height / devicePixelRatio - 4, 20, true, true);
+
+
+    //centerline
+    ctx.moveTo(0, canvas.height / devicePixelRatio / 2);
+    ctx.lineTo(canvas.width / devicePixelRatio, canvas.height / devicePixelRatio / 2);
+    ctx.stroke();
 
 
     //paddle color
@@ -230,9 +236,12 @@ function drawHockeyRink() {
     ctx.arc(player2Paddle.x, player2Paddle.y, player2Paddle.radius, 0, 2 * Math.PI);
     ctx.fill();
 
+    //puck color
+    ctx.fillStyle = "blue";
+
     //puck
     ctx.beginPath();
-    ctx.arc(player2Paddle.x, player2Paddle.y, player2Paddle.radius, 0, 2 * Math.PI);
+    ctx.arc(puck.x, puck.y, puck.radius, 0, 2 * Math.PI);
     ctx.fill();
 }
 
