@@ -101,6 +101,16 @@ class Paddle {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.radius = 40;
+    }
+    setX(x){
+    	this.x = x;
+    }
+    setY(y){
+    	if(y < canvas.height / devicePixelRatio / 2){
+    		y = canvas.height / devicePixelRatio / 2 - radius;
+    	}
+    	this.y = y;
     }
 }
 
@@ -151,8 +161,8 @@ $(document).ready(function() {
     }, false);
     canvas.addEventListener("touchmove", function(e) {
         let touch = e.touches[0];
-        player1Paddle.x = touch.clientX
-        player1Paddle.y = touch.clientY;
+        player1Paddle.setX(touch.clientX);
+        player1Paddle.setY(touch.clientY);
 
     }, false);
 
@@ -192,12 +202,12 @@ function drawHockeyRink() {
 
     //player 1 paddle
     ctx.beginPath();
-    ctx.arc(player1Paddle.x, player1Paddle.y, 40, 0, 2 * Math.PI);
+    ctx.arc(player1Paddle.x, player1Paddle.y, player1Paddle.radius, 0, 2 * Math.PI);
     ctx.fill();
 
     //player 2 paddle
     ctx.beginPath();
-    ctx.arc(player2Paddle.x, player2Paddle.y, 40, 0, 2 * Math.PI);
+    ctx.arc(player2Paddle.x, player2Paddle.y, player2Paddle.radius, 0, 2 * Math.PI);
     ctx.fill();
 }
 
