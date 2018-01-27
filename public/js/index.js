@@ -152,8 +152,6 @@ function getTouchPos(canvasDom, touchEvent) {
 
  	 }, false);
 
-
-
  	});
 
  function aspectRatio(){
@@ -161,7 +159,7 @@ function getTouchPos(canvasDom, touchEvent) {
 	let height = $("body").height();
 	let ratio = width / height;
 
-	let destinationRatio = 16/9;
+	let destinationRatio = 94/100;
 
 	if(ratio == destinationRatio ){
 		return [width, height];
