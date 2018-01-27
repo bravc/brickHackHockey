@@ -5,6 +5,7 @@ let soc = io();
 $(document).ready(function() {
 
     let roomID = $('#roomID'),
+        createRoom = $('#createRoom');
         createBtn = $('#createRoomButton'),
         joinBtn = $('#roomEnterButton'),
         display = $('#currRoomID'),
@@ -16,7 +17,7 @@ $(document).ready(function() {
     displayRoomID = (roomID) => {
         console.log("Got here");
 
-        display.text(roomID);
+        display.text("Waiting for other player in room: " + roomID);
     }
 
     /**
@@ -37,7 +38,10 @@ $(document).ready(function() {
      * then display it
      */
     createBtn.on('click', function(){
-        soc.emit("ADD_ROOM", displayRoomID);
+        let roomName = createRoom.val();
+        if(roomName != ''){
+            soc.emit("ADD_ROOM", roomName, displayRoomID);
+        }
     });
 
     /**
