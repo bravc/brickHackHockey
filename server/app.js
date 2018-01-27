@@ -17,9 +17,14 @@ let connectedUsers = {};
 let openRooms = {};
 
 io.on('connection', function(socket){
+    //When you connect to the site, tell the server
     console.log('Connected to socket ' + socket.id);
     connectedUsers[uuid()] = socket.id;
 
+    /**
+     * Create a new room with a size of one
+     * and callback to the client with the new roomID
+     */
     socket.on('ADD_ROOM', function(callback){
         let roomID = uuid();
         openRooms[roomID] = 1;
@@ -28,6 +33,11 @@ io.on('connection', function(socket){
         callback(roomID);
     });
 
+    /**
+     * Attempt to connect to the room, if it's full
+     * alert the client. Otherwise, join the room
+     * and enter the game
+     */
     socket.on('CONNECT_ROOM', function(roomID, callback){
         if (roomID in openRooms) {
             if(openRooms[roomID] < 2){
