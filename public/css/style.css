@@ -3,6 +3,10 @@ html,body, .container-fluid{
 	padding: 0px !important;
 }
 
+body{
+	background-color: black;
+}
+
 #blur{
 	-webkit-filter: blur(5px);
 	-moz-filter: blur(5px);
@@ -36,4 +40,8 @@ html,body, .container-fluid{
 
 #gameBoard{
 	height:100%;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	border-radius: 10%;
 }
