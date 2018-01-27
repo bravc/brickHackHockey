@@ -14,22 +14,26 @@ server.listen(PORT, function(){
 
 
 let connectedUsers = {};
+let openRooms = [];
 
 io.on('connection', function(socket){
     console.log('Connected to socket ' + socket.id);
     connectedUsers[uuid()] = socket.id;
 
-    let roomID = uuid();
+    socket.on('ADD_ROOM', function(){
+        let roomID = uuid();
+        openRooms.push(roomID);
+        socket.join(roomID);
+        console.log(roomID);
+    });
 
-    socket.on('ROOM_CONNECT', function(uuid){
-        if (connectedUsers.includes(uuid)){
+    socket.on('CONNECT_ROOM', function(roomID){
+        if (openRooms.includes(roomID)) {
             socket.join(roomID);
-            socket.to(connectedUsers[uuid]).emit("ROOM_REQUEST", roomID );
+            console.log("Joining room: " + roomID);
+        } else {
+            console.log(roomID + " is an invalid roomID");
         }
     });
 
-    socket.on("ROOM_ACCEPT", function(roomID){
-        socket.join(roomID);
-    });
-    
 });
