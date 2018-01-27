@@ -11,12 +11,12 @@ function scaleCanvas(canvas, context, width, height) {
 
   // determine the 'backing store ratio' of the canvas context
   const backingStoreRatio = (
-    context.webkitBackingStorePixelRatio ||
-    context.mozBackingStorePixelRatio ||
-    context.msBackingStorePixelRatio ||
-    context.oBackingStorePixelRatio ||
-    context.backingStorePixelRatio || 1
-  );
+  	context.webkitBackingStorePixelRatio ||
+  	context.mozBackingStorePixelRatio ||
+  	context.msBackingStorePixelRatio ||
+  	context.oBackingStorePixelRatio ||
+  	context.backingStorePixelRatio || 1
+  	);
 
   // determine the actual ratio we want to draw at
   const ratio = devicePixelRatio / backingStoreRatio;
@@ -29,14 +29,14 @@ function scaleCanvas(canvas, context, width, height) {
     // ...then scale it back down with CSS
     canvas.style.width = width + 'px';
     canvas.style.height = height + 'px';
-  }
-  else {
+}
+else {
     // this is a normal 1:1 device; just scale it simply
     canvas.width = width;
     canvas.height = height;
     canvas.style.width = '';
     canvas.style.height = '';
-  }
+}
 
   // scale the drawing context so everything will work at the higher ratio
   context.scale(ratio, ratio);
@@ -91,20 +91,68 @@ function scaleCanvas(canvas, context, width, height) {
  	return 1;
  }
 
+ class Paddle {
+ 	constructor(x,y) {
+ 		this.x = x;
+ 		this.y = y;
+ 	}
+ }
+
+ var player1Paddle;
+
+ var player2Paddle;
+
+
+// Get the position of a touch relative to the canvas
+function getTouchPos(canvasDom, touchEvent) {
+  var rect = canvasDom.getBoundingClientRect();
+  return {
+    x: touchEvent.touches[0].clientX - rect.left,
+    y: touchEvent.touches[0].clientY - rect.top
+  };
+}
+
  $(document).ready(function() {
  	canvas = document.getElementById("gameBoard");
 	 ctx = canvas.getContext("2d");
 
  	scaleCanvas(canvas, ctx, aspectRatio()[0], aspectRatio()[1]);
 
+ 	player1Paddle = new Paddle(canvas.width / devicePixelRatio / 2, canvas.height / devicePixelRatio - 100);
+
+ 	player2Paddle = new Paddle(canvas.width / devicePixelRatio / 2, 100);
+
+ 	if(devMode){
+ 		$("#blur").hide();
+ 	}
+
+ 	timer=setInterval(drawHockeyRink, 10);
 
 
-	if(devMode){
-		$("#blur").hide();
-	}
+ 	 // Set up touch events for mobile, etc
+ 	 canvas.addEventListener("touchstart", function (e) {
+ 	 	mousePos = getTouchPos(canvas, e);
+ 	 	//var touch = e.touches[0];
+ 	 	//var mouseEvent = new MouseEvent("mousedown", {
+ 	 		//clientX: touch.clientX,
+ 	 		//clientY: touch.clientY
+ 	 	//});
+ 	 	//canvas.dispatchEvent(mouseEvent);
+ 	 }, false);
+ 	 canvas.addEventListener("touchend", function (e) {
+ 	 	//var mouseEvent = new MouseEvent("mouseup", {});
+ 	 	//canvas.dispatchEvent(mouseEvent);
+ 	 }, false);
+ 	 canvas.addEventListener("touchmove", function (e) {
+ 	 	var touch = e.touches[0];
+ 	 	player1Paddle.x = touch.clientX
+ 	 	player1Paddle.y = touch.clientY;
 
-	timer=setInterval(drawHockeyRink, 10);
-});
+ 	 }, false);
+
+
+
+ 	});
 
  function aspectRatio(){
 	let width = $("body").width();
@@ -123,16 +171,35 @@ function scaleCanvas(canvas, context, width, height) {
 
 
  function drawHockeyRink(){
- 	// Draw using default border radius,
-	// stroke it but no fill (function's default values)
-	ctx.strokeStyle = "rgb(255, 0, 0)";
-	ctx.fillStyle = "#FFFFFF";
-	roundRect(ctx, 2, 2, canvas.width / devicePixelRatio - 4, canvas.height / devicePixelRatio - 4, 20, true, true);
- }
 
- function resizeCanvas(){
- 	var canvas = document.getElementById("gameBoard");
- 	var newSize = canvas.height / (16/22);
+ 	// draw in arena
+
+ 	//white background
+ 	ctx.strokeStyle = "rgb(255, 0, 0)";
+ 	ctx.fillStyle = "#FFFFFF";
+ 	roundRect(ctx, 2, 2, canvas.width / devicePixelRatio - 4, canvas.height / devicePixelRatio - 4, 20, true, true);
+
+
+ 	ctx.fillStyle = "#000000";
+
+
+	//player 1 paddle
+	ctx.beginPath();
+	ctx.arc(player1Paddle.x, player1Paddle.y, 40, 0, 2 * Math.PI);
+	ctx.fill();
+
+	//player 2 paddle
+	ctx.beginPath();
+	ctx.arc(player2Paddle.x, player2Paddle.y, 40, 0, 2 * Math.PI);
+	ctx.fill();
+}
+
+
+
+
+function resizeCanvas(){
+	var canvas = document.getElementById("gameBoard");
+	var newSize = canvas.height / (16/22);
  	//canvas.width = newSize;
  }
 
