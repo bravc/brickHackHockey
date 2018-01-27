@@ -1,6 +1,8 @@
 let pixelRatio = window.devicePixelRatio;
 let devMode = true;
 
+const socket = require('./realtime');
+
 let canvas;
 let ctx;
 let timer;

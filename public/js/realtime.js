@@ -1,5 +1,6 @@
 const socketUrl = "/" 
-const socket = io();
+export const socket = io();
+
 
 
 
