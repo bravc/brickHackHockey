@@ -263,6 +263,18 @@ function drawHockeyRink() {
     ctx.stroke();
     ctx.closePath();
 
+
+    //scores
+    ctx.save();
+	ctx.translate(normalizedWidth - 20, 0);
+	ctx.rotate(Math.PI/2);
+	ctx.textAlign = "center";
+	ctx.font = "30px Arial";
+	ctx.fillStyle = "#000000";
+	ctx.fillText("0", normalizedHeight / 2 - 20, 10); //player 1
+	ctx.fillText("0", normalizedHeight / 2 + 20, 10); //player 2
+	ctx.restore();
+
     //paddle color
     ctx.fillStyle = "#000000";
 
