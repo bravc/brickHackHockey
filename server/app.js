@@ -1,5 +1,5 @@
 const express = require('express');
-
+const uuid = require('uuid/v4');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -13,7 +13,23 @@ server.listen(PORT, function(){
 });
 
 
+let connectedUsers = {};
+
 io.on('connection', function(socket){
     console.log('Connected to socket ' + socket.id);
+    connectedUsers[uuid()] = socket.id;
+
+    let roomID = uuid();
+
+    socket.on('ROOM_CONNECT', function(uuid){
+        if (connectedUsers.includes(uuid)){
+            socket.join(roomID);
+            socket.to(connectedUsers[uuid]).emit("ROOM_REQUEST", roomID );
+        }
+    });
+
+    socket.on("ROOM_ACCEPT", function(roomID){
+        socket.join(roomID);
+    });
     
 });
