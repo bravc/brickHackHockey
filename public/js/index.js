@@ -1,6 +1,6 @@
 var pixelRatio = window.devicePixelRatio;
-const socketUrl = (process.env.NODE_ENV === "development") ? "http://localhost:3000" : "/" 
-
+const socketUrl = "/" 
+const socket = io.connect(socketUrl);
 
 $(document).ready(function() {
     var canvas = document.getElementById("gameBoard");
@@ -9,6 +9,13 @@ $(document).ready(function() {
 	ctx.fillStyle = "#FFFFFF";
 	ctx.fillRect(0,0,150,75);
 	resizeCanvas();
+
+
+
+
+	socket.on('connection', function(){
+		console.log("Connected to socket.io");
+	});
 });
 
 
