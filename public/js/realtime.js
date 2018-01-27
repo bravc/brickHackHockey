@@ -53,8 +53,6 @@ $(document).ready(function() {
             alert("User does not exist!")
         }
     });
-
-
     soc.on('connect', function(){
         console.log('Connected...');
     });
