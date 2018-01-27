@@ -1,9 +1,9 @@
-var pixelRatio = window.devicePixelRatio;
+let pixelRatio = window.devicePixelRatio;
 let devMode = true;
 
-var canvas;
-var ctx;
-var timer;
+let canvas;
+let ctx;
+let timer;
 
 //makes the canvas scale right for retina devices
 function scaleCanvas(canvas, context, width, height) {
@@ -99,14 +99,14 @@ else {
  	}
  }
 
- var player1Paddle;
+ let player1Paddle;
 
- var player2Paddle;
+ let player2Paddle;
 
 
 // Get the position of a touch relative to the canvas
 function getTouchPos(canvasDom, touchEvent) {
-  var rect = canvasDom.getBoundingClientRect();
+  let rect = canvasDom.getBoundingClientRect();
   return {
     x: touchEvent.touches[0].clientX - rect.left,
     y: touchEvent.touches[0].clientY - rect.top
@@ -134,19 +134,19 @@ function getTouchPos(canvasDom, touchEvent) {
  	 canvas.addEventListener("touchstart", function (e) {
  	 	mousePos = getTouchPos(canvas, e);
  	 	e.preventDefault();
- 	 	//var touch = e.touches[0];
- 	 	//var mouseEvent = new MouseEvent("mousedown", {
+ 	 	//let touch = e.touches[0];
+ 	 	//let mouseEvent = new MouseEvent("mousedown", {
  	 		//clientX: touch.clientX,
  	 		//clientY: touch.clientY
  	 	//});
  	 	//canvas.dispatchEvent(mouseEvent);
  	 }, false);
  	 canvas.addEventListener("touchend", function (e) {
- 	 	//var mouseEvent = new MouseEvent("mouseup", {});
+ 	 	//let mouseEvent = new MouseEvent("mouseup", {});
  	 	//canvas.dispatchEvent(mouseEvent);
  	 }, false);
  	 canvas.addEventListener("touchmove", function (e) {
- 	 	var touch = e.touches[0];
+ 	 	let touch = e.touches[0];
  	 	player1Paddle.x = touch.clientX
  	 	player1Paddle.y = touch.clientY;
 
@@ -160,13 +160,16 @@ function getTouchPos(canvasDom, touchEvent) {
 	let width = $("body").width();
 	let height = $("body").height();
 	let ratio = width / height;
-	if(ratio == 16/9 ){
+
+	let destinationRatio = 16/9;
+
+	if(ratio == destinationRatio ){
 		return [width, height];
-	}else if(ratio > 16/9 ){
-		width = width * 16/9;
+	}else if(ratio > destinationRatio ){
+		width = width * destinationRatio;
 		return [width, height];
-	}else if(ratio < 16/9){
-		height = height * 16/9;
+	}else if(ratio < destinationRatio){
+		height = height * destinationRatio;
 		return [width, height];
 	}
  }
@@ -200,8 +203,8 @@ function getTouchPos(canvasDom, touchEvent) {
 
 
 function resizeCanvas(){
-	var canvas = document.getElementById("gameBoard");
-	var newSize = canvas.height / (16/22);
+	let canvas = document.getElementById("gameBoard");
+	let newSize = canvas.height / (16/22);
  	//canvas.width = newSize;
  }
 
