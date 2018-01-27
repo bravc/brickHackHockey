@@ -6,5 +6,5 @@ $(document).ready(function() {
 });
 
 $(window).resize(function(){
-   $('#gameBoard').height($('#gameBoard').width() / (9/16));
+   $('#gameBoard').width($('#gameBoard').height() / (9/16));
 });
