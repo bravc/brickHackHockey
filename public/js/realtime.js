@@ -5,6 +5,7 @@ let soc = io();
 $(document).ready(function() {
 
     let roomID = $('#roomID'),
+        createRoom = $('#createRoom');
         createBtn = $('#createRoomButton'),
         joinBtn = $('#roomEnterButton'),
         display = $('#currRoomID'),
@@ -16,17 +17,17 @@ $(document).ready(function() {
     displayRoomID = (roomID) => {
         console.log("Got here");
 
-        display.text(roomID);
+        display.text("Waiting for other player in room: " + roomID);
     }
 
     /**
      * Callback used by server to either hide div or alert of error
      */
     hideForm = (roomExists) => {
-        if(roomExists){
+        if(roomExists === ""){
             blur.hide();
         }else{
-            alert("Room is full!");
+            alert(roomExists);
             roomID.attr('value', '');
         }
     }
@@ -37,7 +38,10 @@ $(document).ready(function() {
      * then display it
      */
     createBtn.on('click', function(){
-        soc.emit("ADD_ROOM", displayRoomID);
+        let roomName = createRoom.val();
+        if(roomName != ''){
+            soc.emit("ADD_ROOM", roomName, displayRoomID);
+        }
     });
 
     /**

@@ -23,8 +23,8 @@ io.on('connection', function(socket){
      * Create a new room with a size of one
      * and callback to the client with the new roomID
      */
-    socket.on('ADD_ROOM', function(callback){
-        roomID = uuid();
+    socket.on('ADD_ROOM', function(roomName, callback){
+        roomID = roomName;
         openRooms[roomID] = 1;
         socket.join(roomID);
         console.log(roomID);
@@ -63,6 +63,10 @@ io.on('connection', function(socket){
             socket.leave(roomID);
             delete openRooms[roomID];
         }
+    });
+
+    socket.on("MOVE_PUCK", function(x ,y){
+        socket.to(roomID).emit("OPPONENT_PUCK_MOVE", x,y);
     });
 
 });
