@@ -106,10 +106,9 @@ class Paddle {
         this.y = y;
         this.radius = 40;
     }
-    setX(x){
+    setPos(x, y){
     	this.x = x;
-    }
-    setY(y){
+
     	if(y < canvas.height / devicePixelRatio / 2){
     		y = canvas.height / devicePixelRatio / 2 - radius;
     	}
@@ -181,8 +180,7 @@ $(document).ready(function() {
     }, false);
     canvas.addEventListener("touchmove", function(e) {
         let touch = e.touches[0];
-        player1Paddle.setX(touch.clientX);
-        player1Paddle.setY(touch.clientY);
+        player1Paddle.setPos(touch.clientX, touch.clientY);
 
     }, false);
 
