@@ -28,11 +28,12 @@ io.on('connection', function(socket){
         callback(roomID);
     });
 
-    socket.on('CONNECT_ROOM', function(roomID){
+    socket.on('CONNECT_ROOM', function(roomID, callback){
         if (openRooms.includes(roomID)) {
             socket.join(roomID);
             console.log("Joining room: " + roomID);
             socket.to(roomID).emit("ENTER_GAME");
+            callback();
         } else {
             console.log(roomID + " is an invalid roomID");
         }

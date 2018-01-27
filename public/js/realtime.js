@@ -8,7 +8,8 @@ $(document).ready(function() {
     let roomID = $('#roomID'),
         createBtn = $('#createRoomButton'),
         joinBtn = $('#roomEnterButton'),
-        display = $('#currRoomID');
+        display = $('#currRoomID'),
+        blur = $('#blur');
 
 
 
@@ -18,13 +19,17 @@ $(document).ready(function() {
         display.text(roomID);
     }
 
+    hideForm = () => {
+        blur.hide();
+    }
+
     createBtn.on('click', function(){
         socket.emit("ADD_ROOM", displayRoomID);
     });
 
     joinBtn.on('click', function(){        
         if(roomID.val() != ''){
-            socket.emit("CONNECT_ROOM", roomID.val())
+            socket.emit("CONNECT_ROOM", roomID.val(), hideForm);
         }else{  
             alert("User does not exist!")
         }
@@ -34,6 +39,8 @@ $(document).ready(function() {
         console.log('Connected...'); 
     });
 
+    socket.on("ENTER_GAME", function(){
+        blur.hide();
+    });
 
-    
 });
