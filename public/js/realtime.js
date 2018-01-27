@@ -19,8 +19,13 @@ $(document).ready(function() {
         display.text(roomID);
     }
 
-    hideForm = () => {
-        blur.hide();
+    hideForm = (roomExists) => {
+        if(roomExists){
+            blur.hide();
+        }else{
+            alert("Room is full!");
+            roomID.attr('value', '');
+        }
     }
 
     createBtn.on('click', function(){

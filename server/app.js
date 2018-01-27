@@ -14,7 +14,7 @@ server.listen(PORT, function(){
 
 
 let connectedUsers = {};
-let openRooms = [];
+let openRooms = {};
 
 io.on('connection', function(socket){
     console.log('Connected to socket ' + socket.id);
@@ -22,20 +22,26 @@ io.on('connection', function(socket){
 
     socket.on('ADD_ROOM', function(callback){
         let roomID = uuid();
-        openRooms.push(roomID);
+        openRooms[roomID] = 1;
         socket.join(roomID);
         console.log(roomID);
         callback(roomID);
     });
 
     socket.on('CONNECT_ROOM', function(roomID, callback){
-        if (openRooms.includes(roomID)) {
-            socket.join(roomID);
-            console.log("Joining room: " + roomID);
-            socket.to(roomID).emit("ENTER_GAME");
-            callback();
+        if (roomID in openRooms) {
+            if(openRooms[roomID] < 2){
+                openRooms[roomID] = 2;
+                socket.join(roomID);
+                console.log("Joining room: " + roomID);
+                socket.to(roomID).emit("ENTER_GAME");
+                callback(true);
+            }else{
+                callback(false);
+            }
         } else {
             console.log(roomID + " is an invalid roomID");
+            callback(false);
         }
     });
 
