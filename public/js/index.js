@@ -93,9 +93,9 @@ function scaleCanvas(canvas, context, width, height) {
 
  $(document).ready(function() {
  	canvas = document.getElementById("gameBoard");
- 	ctx = canvas.getContext("2d");
+	 ctx = canvas.getContext("2d");
 
- 	scaleCanvas(canvas, ctx, $("body").width() * (14/16), $("body").height() * (15/16));
+ 	scaleCanvas(canvas, ctx, aspectRatio()[0], aspectRatio()[1]);
 
 
 
@@ -105,6 +105,21 @@ function scaleCanvas(canvas, context, width, height) {
 
 	timer=setInterval(drawHockeyRink, 10);
 });
+
+ function aspectRatio(){
+	let width = $("body").width();
+	let height = $("body").height();
+	let ratio = width / height;
+	if(ratio == 16/9 ){
+		return [width, height];
+	}else if(ratio > 16/9 ){
+		width = width * 16/9;
+		return [width, height];
+	}else if(ratio < 16/9){
+		height = height * 16/9;
+		return [width, height];
+	}
+ }
 
 
  function drawHockeyRink(){
