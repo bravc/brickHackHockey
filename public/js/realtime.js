@@ -1,4 +1,4 @@
-const socketUrl = "/" 
+const socketUrl = "/"
 const socket = io();
 
 
@@ -15,15 +15,15 @@ $(document).ready(function() {
 
     displayRoomID = (roomID) => {
         console.log("Got here");
-        
+
         display.text(roomID);
     }
 
     hideForm = (roomExists) => {
-        if(roomExists){
+        if(roomExists === ''){
             blur.hide();
         }else{
-            alert("Room is full!");
+            alert(roomExists);
             roomID.attr('value', '');
         }
     }
@@ -32,16 +32,16 @@ $(document).ready(function() {
         socket.emit("ADD_ROOM", displayRoomID);
     });
 
-    joinBtn.on('click', function(){        
+    joinBtn.on('click', function(){
         if(roomID.val() != ''){
             socket.emit("CONNECT_ROOM", roomID.val(), hideForm);
-        }else{  
+        }else{
             alert("User does not exist!")
         }
     });
 
     socket.on('connect', function(){
-        console.log('Connected...'); 
+        console.log('Connected...');
     });
 
     socket.on("ENTER_GAME", function(){

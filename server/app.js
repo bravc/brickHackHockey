@@ -35,13 +35,13 @@ io.on('connection', function(socket){
                 socket.join(roomID);
                 console.log("Joining room: " + roomID);
                 socket.to(roomID).emit("ENTER_GAME");
-                callback(true);
+                callback('');
             }else{
-                callback(false);
+                callback('Room is full!');
             }
         } else {
             console.log(roomID + " is an invalid roomID");
-            callback(false);
+            callback('Room does not exist!');
         }
     });
 
