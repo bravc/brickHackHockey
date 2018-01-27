@@ -1,0 +1,16 @@
+html,body, .container-fluid{
+	height: 100%;
+	padding: 0px !important;
+}
+
+body{
+	background-color: black;
+}
+
+#gameBoard{
+	height:100%;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	border-radius: 10%;
+}
