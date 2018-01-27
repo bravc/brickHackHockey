@@ -41,7 +41,6 @@ $(document).ready(function() {
         socket.emit("ADD_ROOM", displayRoomID);
     });
 
-    joinBtn.on('click', function(){
     /**
      * When join button clicked,
      * check if if input was not empty

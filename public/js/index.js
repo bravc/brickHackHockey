@@ -125,8 +125,3 @@ function scaleCanvas(canvas, context, width, height) {
 $(window).resize(function(){
 	resizeCanvas();
 });
-
-
-
-
-
