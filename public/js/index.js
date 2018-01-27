@@ -114,8 +114,24 @@ class Paddle {
     }
 }
 
+//represents the puck
+class Puck {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.radius = 15;
+    }
+    setX(x){
+    	this.x = x;
+    }
+    setY(y){
+    	this.y = y;
+    }
+}
+
 let player1Paddle;
 let player2Paddle;
+let puck;
 
 
 // Get the position of a touch relative to the canvas
@@ -139,6 +155,9 @@ $(document).ready(function() {
 
     //make the opponent paddle
     player2Paddle = new Paddle(canvas.width / devicePixelRatio / 2, 100);
+
+    //puck
+    puck = new Puck(canvas.width / devicePixelRatio / 2, canvas.height / devicePixelRatio / 2);
 
     //hide the login form inititally
     if (devMode) {
@@ -206,6 +225,11 @@ function drawHockeyRink() {
     ctx.fill();
 
     //player 2 paddle
+    ctx.beginPath();
+    ctx.arc(player2Paddle.x, player2Paddle.y, player2Paddle.radius, 0, 2 * Math.PI);
+    ctx.fill();
+
+    //puck
     ctx.beginPath();
     ctx.arc(player2Paddle.x, player2Paddle.y, player2Paddle.radius, 0, 2 * Math.PI);
     ctx.fill();
