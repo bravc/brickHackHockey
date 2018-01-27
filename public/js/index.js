@@ -1,11 +1,14 @@
 let pixelRatio = window.devicePixelRatio;
 let devMode = true;
 
-const socket = require('./realtime');
+//const socket = require('./realtime');
 
 let canvas;
 let ctx;
 let timer;
+let player1Paddle;
+let player2Paddle;
+let puck;
 
 //makes the canvas scale right for retina devices
 function scaleCanvas(canvas, context, width, height) {
@@ -129,9 +132,7 @@ class Puck {
     }
 }
 
-let player1Paddle;
-let player2Paddle;
-let puck;
+
 
 
 // Get the position of a touch relative to the canvas
@@ -146,6 +147,8 @@ function getTouchPos(canvasDom, touchEvent) {
 $(document).ready(function() {
     canvas = document.getElementById("gameBoard");
     ctx = canvas.getContext("2d");
+
+    conn.emit("hello");
 
     //scale the canvas properly
     scaleCanvas(canvas, ctx, aspectRatio()[0], aspectRatio()[1]);

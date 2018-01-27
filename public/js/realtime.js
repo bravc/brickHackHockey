@@ -1,7 +1,5 @@
-const socketUrl = "/" 
-export const socket = io();
-
-
+var connUrl = "/"
+let conn = io();
 
 
 $(document).ready(function() {
@@ -17,7 +15,7 @@ $(document).ready(function() {
      */
     displayRoomID = (roomID) => {
         console.log("Got here");
-        
+
         display.text(roomID);
     }
 
@@ -39,7 +37,7 @@ $(document).ready(function() {
      * then display it
      */
     createBtn.on('click', function(){
-        socket.emit("ADD_ROOM", displayRoomID);
+        conn.emit("ADD_ROOM", displayRoomID);
     });
 
     /**
@@ -48,24 +46,24 @@ $(document).ready(function() {
      * and then tell the server to join the
      * room
      */
-    joinBtn.on('click', function(){        
+    joinBtn.on('click', function(){
         if(roomID.val() != ''){
-            socket.emit("CONNECT_ROOM", roomID.val(), hideForm);
-        }else{  
+            conn.emit("CONNECT_ROOM", roomID.val(), hideForm);
+        }else{
             alert("User does not exist!")
         }
     });
 
 
-    socket.on('connect', function(){
-        console.log('Connected...'); 
+    conn.on('connect', function(){
+        console.log('Connected...');
     });
 
     /**
-     * When both parties have joined, 
+     * When both parties have joined,
      * hide the menu
      */
-    socket.on("ENTER_GAME", function(){
+    conn.on("ENTER_GAME", function(){
         blur.hide();
     });
 
