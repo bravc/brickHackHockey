@@ -12,21 +12,19 @@ server.listen(PORT, function(){
     console.log('Server started on port ' + PORT + '...');
 });
 
-
-let connectedUsers = {};
 let openRooms = {};
+let roomID = 0;
 
 io.on('connection', function(socket){
     //When you connect to the site, tell the server
     console.log('Connected to socket ' + socket.id);
-    connectedUsers[uuid()] = socket.id;
 
     /**
      * Create a new room with a size of one
      * and callback to the client with the new roomID
      */
     socket.on('ADD_ROOM', function(callback){
-        let roomID = uuid();
+        roomID = uuid();
         openRooms[roomID] = 1;
         socket.join(roomID);
         console.log(roomID);
@@ -52,6 +50,18 @@ io.on('connection', function(socket){
         } else {
             console.log(roomID + " is an invalid roomID");
             callback('Room does not exist!');
+        }
+    });
+
+    /**
+     * Exit the room
+     * alert the other member of the room
+     */
+    socket.on('disconnect', function(){
+        if (roomID !== 0) {
+            socket.to(roomID).emit('EXIT_ROOM');
+            socket.leave(roomID);
+            delete openRooms[roomID];
         }
     });
 
