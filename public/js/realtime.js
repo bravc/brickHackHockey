@@ -22,11 +22,11 @@ $(document).ready(function() {
     /**
      * Callback used by server to either hide div or alert of error
      */
-    hideForm = (roomExists) => {
+    hideForm = (roomExist) => {
         if(roomExists === ""){
             blur.hide();
         }else{
-            alert(roomExists);
+            alert(roomExist);
             roomID.attr('value', '');
         }
     }
