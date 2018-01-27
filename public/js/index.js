@@ -1,4 +1,6 @@
 var pixelRatio = window.devicePixelRatio;
+const socketUrl = (process.env.NODE_ENV === "development") ? "http://localhost:3000" : "/" 
+
 
 $(document).ready(function() {
     var canvas = document.getElementById("gameBoard");
@@ -21,3 +23,6 @@ $(window).resize(function(){
 });
 
 
+
+
+							
