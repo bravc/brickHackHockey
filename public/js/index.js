@@ -1,5 +1,6 @@
 var pixelRatio = window.devicePixelRatio;
 
+
 $(document).ready(function() {
     var canvas = document.getElementById("gameBoard");
     canvas.getContext('2d').scale(pixelRatio,pixelRatio);
@@ -8,6 +9,9 @@ $(document).ready(function() {
 	ctx.fillRect(0,0,150,75);
 	resizeCanvas();
 });
+
+
+
 
 
 function resizeCanvas(){
@@ -21,3 +25,6 @@ $(window).resize(function(){
 });
 
 
+
+
+							
