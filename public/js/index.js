@@ -181,7 +181,7 @@ $(document).ready(function() {
 
 
     //start the canvas updates
-    timer = setInterval(drawHockeyRink, 1);
+    timer = setInterval(drawHockeyRink, 1/6*100);
 
 
     // Set up touch events for mobile, etc
