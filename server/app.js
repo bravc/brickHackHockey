@@ -95,7 +95,7 @@ class Puck {
             //Goal scored and puck replaced at center ice
             if(this.x > ((canvas1Width / 4) + 5)
                 && this.x < ((canvas1Width * 3 / 4) - 5)){
-                    client1.setScore();
+                    socket.emit("PLAYER1_GOAL");
                     this.vY = 0;
                     this.vX = 0;
                     y = canvas1Height / 2;
