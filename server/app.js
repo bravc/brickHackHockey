@@ -15,6 +15,8 @@ server.listen(PORT, function(){
 let openRooms = {};
 let roomID = 0;
 
+let puckPos;
+
 io.on('connection', function(socket){
     //When you connect to the site, tell the server
     console.log('Connected to socket ' + socket.id);
@@ -85,6 +87,10 @@ io.on('connection', function(socket){
 
     socket.on("PLAYER2_GOAL", function(){
         socket.to(roomID).emit("PLAYER2_SCORE");
+    });
+
+    socket.on("PUCK_CHANGE", function(x, vX, y, vY){
+        socket.to(roomID).emit("CHANGE_PUCK", x, vX, y, vY);
     });
 
 });

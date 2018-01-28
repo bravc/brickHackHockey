@@ -205,7 +205,8 @@ class Puck {
 	}
     updatePosition(){
 
-    	this.setPosition(this.x + this.vX, this.y + this.vY);
+        this.setPosition(this.x + this.vX, this.y + this.vY);
+        soc.emit("PUCK_CHANGE", this.x, this.vX, this.y, this.vY);
 
 	    //this acceleration calculations
 	    if(this.vX > 0)
@@ -216,7 +217,7 @@ class Puck {
 	    if(this.vY > 0)
 	    	this.vY -= this.acceleration;
 	    else if(this.vY < 0)
-	    	this.vY += this.acceleration;
+            this.vY += this.acceleration;
     }
 }
 

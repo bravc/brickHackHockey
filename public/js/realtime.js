@@ -113,4 +113,11 @@ $(document).ready(function() {
         player2Paddle.setScore();
     });
 
+    soc.on("CHANGE_PUCK", function(x, vX, y, vY){
+        puck.x = x;
+        puck.vX = vX;
+        puck.y = y;
+        puck.vY = vY;
+    });
+
 });
