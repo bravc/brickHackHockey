@@ -3,6 +3,9 @@ let devMode = false;
 
 const updateTime = 1/6*100;
 const minVelocity = 300;
+const wallReturn = 3;
+const accelerationConstant = 10000;
+const velocityMultiple = 1000;
 
 let canvas;
 let ctx;
@@ -165,18 +168,18 @@ class Puck {
         this.vY = 0;
         this.xIsColiding = false;
         this.yIsColiding = false;
-        this.acceleration = 0.005;
+        this.deceleration = 0.005;
         this.radius = 15;
         this.mass = 0.2;
     }
 	setPosition(x,y){
 		if(this.x + this.radius >= canvas.width / devicePixelRatio && this.xIsColiding == false){
 			this.vX = -this.vX;
-			x -= 10;
+			x -= wallReturn;
 			this.xIsColiding = true;
 		} else if(this.x - this.radius <= 0 && this.xIsColiding == false){
 			this.vX = -this.vX;
-			x += 10;
+			x += wallReturn;
 			this.xIsColiding = true;
 		} else {
 			this.xIsColiding = false;
@@ -184,7 +187,7 @@ class Puck {
 
 		if(this.y >= canvas.height / devicePixelRatio && this.yIsColiding == false){
 			this.vY = -this.vY;
-			y -= 10;
+			y -= wallReturn;
 			this.yIsColiding = true;
 		} else if(this.y <= 0 && this.yIsColiding == false){
 
@@ -198,7 +201,7 @@ class Puck {
                     x = canvas.width / devicePixelRatio / 2;
             } else {
                 this.vY = -this.vY;
-                y += 10;
+                y += wallReturn;
                 this.yIsColiding = true;
             }
 
@@ -214,10 +217,10 @@ class Puck {
         let player1Radii = puck.radius + player1Paddle.radius;
         if ( ( player1Dx * player1Dx )  + ( player1Dy * player1Dy ) < player1Radii * player1Radii){
             if(!player1Paddle.isColiding){
-                let vX = (player1Paddle.x - player1Paddle.previousX) / (updateTime * 1000);
-                let vY = (player1Paddle.y - player1Paddle.previousY) / (updateTime * 1000);
-                puck.vX = vX * 10000;
-                puck.vY = vY * 10000;
+                let vX = (player1Paddle.x - player1Paddle.previousX) / (updateTime * velocityMultiple);
+                let vY = (player1Paddle.y - player1Paddle.previousY) / (updateTime * velocityMultiple);
+                puck.vX = vX * accelerationConstant;
+                puck.vY = vY * accelerationConstant;
             }
             player1Paddle.isColiding = true;
         } else {
@@ -230,10 +233,10 @@ class Puck {
         let player2Radii = puck.radius + player2Paddle.radius;
         if ( ( player2Dx * player2Dx )  + ( player2Dy * player2Dy ) < player2Radii * player2Radii ){
             if(!player2Paddle.isColiding){
-                let vX = (player2Paddle.x - player2Paddle.previousX) / (updateTime * 1000);
-                let vY = (player2Paddle.y - player2Paddle.previousY) / (updateTime * 1000);
-                puck.vX = vX * 10000;
-                puck.vY = vY * 10000;
+                let vX = (player2Paddle.x - player2Paddle.previousX) / (updateTime * velocityMultiple);
+                let vY = (player2Paddle.y - player2Paddle.previousY) / (updateTime * velocityMultiple);
+                puck.vX = vX * accelerationConstant;
+                puck.vY = vY * accelerationConstant;
             }
             player2Paddle.isColiding = true;
         } else {
@@ -246,23 +249,23 @@ class Puck {
 
 	    //this acceleration calculations
 	    if(this.vX > 0){
-            if(this.vX - this.acceleration > minVelocity){
-                this.vX -= this.acceleration;
+            if(this.vX - this.deceleration > minVelocity){
+                this.vX -= this.deceleration;
             }
         }
 	    else if(this.vX < 0){
-            if(this.vX + this.acceleration > -minVelocity){
-	    	  this.vX += this.acceleration;
+            if(this.vX + this.deceleration > -minVelocity){
+	    	  this.vX += this.deceleration;
             }
         }
 
 	    if(this.vY > 0){
-            if(this.vY - this.acceleration > minVelocity){
-                this.vY -= this.acceleration;
+            if(this.vY - this.deceleration > minVelocity){
+                this.vY -= this.deceleration;
             }
 	    } else if(this.vY < 0){
-            if(this.vY + this.acceleration > -minVelocity){
-                this.vY += this.acceleration;
+            if(this.vY + this.deceleration > -minVelocity){
+                this.vY += this.deceleration;
             }
         }
     }
@@ -379,7 +382,7 @@ function drawHockeyRink() {
     ctx.stroke();
     ctx.closePath();
 
-    ctx.strokeStyle = "FF0000";
+    ctx.strokeStyle = "#FF0000";
     ctx.lineWidth = 4;
 
     //center-ice Circle
