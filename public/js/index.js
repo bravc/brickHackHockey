@@ -1,5 +1,5 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = false;
+let devMode = true;
 
 const updateTime = 1/6*100;
 
@@ -253,8 +253,8 @@ function drawHockeyRink() {
     //draw in arena
 
     //white background
-    ctx.strokeStyle = "#FF0000";
-    ctx.fillStyle = "#FFFFFF";
+    ctx.strokeStyle = "#0000FF";
+    ctx.fillStyle = "#000000";
     ctx.lineWidth = 4;
     roundRect(ctx, 2, 2, normalizedWidth - 4, normalizedHeight - 4, 25, true, true);
 
@@ -268,8 +268,8 @@ function drawHockeyRink() {
 
     //player 1 goal line
     ctx.beginPath();
-    ctx.moveTo(goalStart, normalizedHeight - 2);
-    ctx.lineTo(goalEnd, normalizedHeight - 2);
+    ctx.moveTo(goalStart, normalizedHeight);
+    ctx.lineTo(goalEnd, normalizedHeight);
     ctx.stroke();
     ctx.closePath();
 
@@ -280,10 +280,18 @@ function drawHockeyRink() {
     ctx.stroke();
     ctx.closePath();
 
+    ctx.strokeStyle = "FF0000";
+    ctx.lineWidth = 4;
+
+    //center-ice Circle
+    ctx.beginPath();
+    ctx.arc(normalizedWidth / 2, normalizedHeight / 2, normalizedWidth / 4, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.closePath();
 
     //centerline color and width
     ctx.strokeStyle = "#FF0000";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 4;
 
     //centerline
     ctx.beginPath()
@@ -299,13 +307,13 @@ function drawHockeyRink() {
 	ctx.rotate(Math.PI/2);
 	ctx.textAlign = "center";
 	ctx.font = "30px Arial";
-	ctx.fillStyle = "#000000"; //score font color
+	ctx.fillStyle = "#FFFFFF"; //score font color
 	ctx.fillText(player1Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 1
 	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 + 20, 10); //player 2
 	ctx.restore();
 
     //paddle color
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = "#3498db";
 
     //player 1 paddle
     ctx.beginPath();
@@ -320,7 +328,7 @@ function drawHockeyRink() {
     ctx.closePath();
 
     //puck color
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "#ff4757";
 
     //puck
     ctx.beginPath();
