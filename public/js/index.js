@@ -1,5 +1,5 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = false;
+let devMode = true;
 
 //const socket = require('./realtime');
 
@@ -110,25 +110,39 @@ class Paddle {
         this.score = 0;
     }
     setPos(x, y){
-    	if(x > canvas.width / devicePixelRatio - this.radius - 2){
-    		x = canvas.width / devicePixelRatio - this.radius - 2;
-    	}
-    	else if(x < this.radius + 2){
-    		x = this.radius + 2;
-    	}
+		if(this.player == 1){
+			if(x > canvas.width / devicePixelRatio - this.radius - 2){
+    			x = canvas.width / devicePixelRatio - this.radius - 2;
+	    	}
+	    	else if(x < this.radius + 2){
+	    		x = this.radius + 2;
+	    	}
 
-    	this.x = x;
+	    	this.x = x;
 
-    	if(y < canvas.height / devicePixelRatio / 2 + this.radius){
-    		y = canvas.height / devicePixelRatio / 2 + this.radius;
-    	}
-		else if(y > canvas.height / devicePixelRatio - this.radius - 2){
-    		y = canvas.height / devicePixelRatio - this.radius - 2;
-    	}
+	    	if(y < canvas.height / devicePixelRatio / 2 + this.radius){
+	    		y = canvas.height / devicePixelRatio / 2 + this.radius;
+	    	}
+			else if(y > canvas.height / devicePixelRatio - this.radius - 2){
+	    		y = canvas.height / devicePixelRatio - this.radius - 2;
+	    	}
 
-		this.y = y;
-		if(this.player == 1)
+			this.y = y;
+
+			//puck collision detection
+			let dx = puck.x - this.x;
+			let dy = puck.y - this.y;
+			let radii = puck.radius + this.radius;
+			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ){
+				console.log("Collision");
+			}
+
+
+
 			soc.emit("MOVE_PUCK", x, y);
+		} else {
+
+		}
     }
 }
 
@@ -237,6 +251,8 @@ function drawHockeyRink() {
     let goalStart = normalizedWidth / 4;
     let goalEnd = normalizedWidth / 4 * 3;
 
+
+    //goal line color
     ctx.strokeStyle = "#FFFFFF";
 
 
@@ -255,6 +271,7 @@ function drawHockeyRink() {
     ctx.closePath();
 
 
+    //centerline color and width
     ctx.strokeStyle = "#FF0000";
     ctx.lineWidth = 2;
 
@@ -272,7 +289,7 @@ function drawHockeyRink() {
 	ctx.rotate(Math.PI/2);
 	ctx.textAlign = "center";
 	ctx.font = "30px Arial";
-	ctx.fillStyle = "#000000";
+	ctx.fillStyle = "#000000"; //score font color
 	ctx.fillText(player1Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 1
 	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 + 20, 10); //player 2
 	ctx.restore();
