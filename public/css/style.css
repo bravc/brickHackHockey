@@ -31,8 +31,10 @@ body{
 	margin: auto;
 	transform: translateY(15%);
 	background-color: rgba(0,0,0,0.5);
-	border: 3px solid blue;
+	border-radius: 3px;
+	border: 3px solid #ff4757;
 	box-shadow: 5px 5px 5px 5px rgba(117,117,117, 0.6);
+	background: rgba(0,0,0,0.3);
 }
 
 form{
@@ -44,6 +46,7 @@ form{
 	color: white;
 	text-align: center;
 	margin-top: 10%;
+	font-size: 30px;
 }
 
 #field{
