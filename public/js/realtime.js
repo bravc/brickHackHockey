@@ -21,7 +21,7 @@ $(document).ready(function() {
     displayRoomID = (roomID) => {
         console.log("Got here");
 
-        display.text("Waiting for other player in room: " + roomID);
+        display.html("Waiting for other player in room: <br>" + roomID);
     }
 
     /**
