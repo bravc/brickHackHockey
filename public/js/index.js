@@ -111,6 +111,7 @@ class Paddle {
         this.radius = 40;
         this.score = 0;
         this.mass = 1;
+        this.isColiding = false;
     }
 
 
@@ -209,11 +210,16 @@ class Puck {
         let player1Dx = puck.x - player1Paddle.x;
         let player1Dy = puck.y - player1Paddle.y;
         let player1Radii = puck.radius + player1Paddle.radius;
-        if ( ( player1Dx * player1Dx )  + ( player1Dy * player1Dy ) < player1Radii * player1Radii ){
-            let vX = (player1Paddle.x - player1Paddle.previousX) / (updateTime * 1000);
-            let vY = (player1Paddle.y - player1Paddle.previousY) / (updateTime * 1000);
-            puck.vX = vX * 10000;
-            puck.vY = vY * 10000;
+        if ( ( player1Dx * player1Dx )  + ( player1Dy * player1Dy ) < player1Radii * player1Radii){
+            if(!player1Paddle.isColiding){
+                let vX = (player1Paddle.x - player1Paddle.previousX) / (updateTime * 1000);
+                let vY = (player1Paddle.y - player1Paddle.previousY) / (updateTime * 1000);
+                puck.vX = vX * 10000;
+                puck.vY = vY * 10000;
+            }
+            player1Paddle.isColiding = true;
+        } else {
+            player1Paddle.isColiding = false;
         }
 
         //puck collision detection
@@ -221,10 +227,15 @@ class Puck {
         let player2Dy = puck.y - player2Paddle.y;
         let player2Radii = puck.radius + player2Paddle.radius;
         if ( ( player2Dx * player2Dx )  + ( player2Dy * player2Dy ) < player2Radii * player2Radii ){
-            let vX = (player2Paddle.x - player2Paddle.previousX) / (updateTime * 1000);
-            let vY = (player2Paddle.y - player2Paddle.previousY) / (updateTime * 1000);
-            puck.vX = vX * 10000;
-            puck.vY = vY * 10000;
+            if(!player2Paddle.isColiding){
+                let vX = (player2Paddle.x - player2Paddle.previousX) / (updateTime * 1000);
+                let vY = (player2Paddle.y - player2Paddle.previousY) / (updateTime * 1000);
+                puck.vX = vX * 10000;
+                puck.vY = vY * 10000;
+            }
+            player2Paddle.isColiding = true;
+        } else {
+            player2Paddle.isColiding = false;
         }
 	}
     updatePosition(){
