@@ -8,7 +8,7 @@ const io = require('socket.io')(server, {
 });
 const PORT = process.env.PORT || 3000;
 
-const updateTime = 45;
+const updateTime = 20;
 const minVelocity = 300;
 const wallReturn = 3;
 const accelerationConstant = 10000;
