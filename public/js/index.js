@@ -183,6 +183,7 @@ function getTouchPos(canvasDom, touchEvent) {
 
 $(document).ready(function() {
     canvas = document.getElementById("gameBoard");
+
     ctx = canvas.getContext("2d");
 
     let images = document.getElementById("gamePieces");
@@ -210,7 +211,6 @@ $(document).ready(function() {
     //start the canvas updates
     timer = setInterval(drawHockeyRink, updateTime);
 
-
     // Set up touch events for mobile, etc
     canvas.addEventListener("touchstart", function(e) {
         mousePos = getTouchPos(canvas, e);
@@ -225,7 +225,6 @@ $(document).ready(function() {
         player1Paddle.setPos(touch.clientX, touch.clientY);
 
     }, false);
-
 });
 
 function aspectRatio() {
