@@ -185,9 +185,19 @@ class Puck {
 			y -= 10;
 			this.yIsColiding = true;
 		} else if(this.y <= 0 && this.yIsColiding == false){
-			this.vY = -this.vY;
-			y += 10;
-			this.yIsColiding = true;
+
+            if(this.x > (canvas.width / 4) && (this.x < canvas.height * 3 / 4)){
+                player1Paddle.setScore();
+                this.vY = 0;
+                this.vX = 0;
+                y = canvas.height / devicePixelRatio / 2;
+                x = canvas.width / devicePixelRatio / 2;
+            } else {
+                this.vY = -this.vY;
+                y += 10;
+                this.yIsColiding = true;
+            }
+
 		} else {
 			this.yIsColiding = false;
 		}
@@ -372,8 +382,8 @@ function drawHockeyRink() {
 	ctx.textAlign = "center";
 	ctx.font = "30px Arial";
 	ctx.fillStyle = "#FFFFFF"; //score font color
-	ctx.fillText(player1Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 1
-	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 + 20, 10); //player 2
+	ctx.fillText(player1Paddle.score.toString(), normalizedHeight / 2 + 20, 10); //player 1
+	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 2
 	ctx.restore();
 
     //paddle color
