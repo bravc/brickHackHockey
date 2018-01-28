@@ -1,7 +1,7 @@
 let pixelRatio = window.devicePixelRatio;
 let devMode = true;
 
-const updateTime = 1/6*100;
+const updateTime = 15;
 
 
 let canvas;
@@ -144,7 +144,7 @@ class Paddle {
 
 			this.y = y;
 
-            console.log(`canvasWidth: ${canvas.width / devicePixelRatio}, canvasHeight: ${canvas.height / devicePixelRatio}, X: ${x}, Y: ${y}`);
+            //console.log(`canvasWidth: ${canvas.width / devicePixelRatio}, canvasHeight: ${canvas.height / devicePixelRatio}, X: ${x}, Y: ${y}`);
 
 
 			soc.emit("MOVE_PADDLE", x, y, clientNumber);
