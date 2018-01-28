@@ -3,6 +3,7 @@ let devMode = true;
 
 const updateTime = 1/6*100;
 const minVelocity = 300;
+const wallReturn = 3;
 
 let canvas;
 let ctx;
@@ -172,11 +173,11 @@ class Puck {
 	setPosition(x,y){
 		if(this.x + this.radius >= canvas.width / devicePixelRatio && this.xIsColiding == false){
 			this.vX = -this.vX;
-			x -= 10;
+			x -= wallReturn;
 			this.xIsColiding = true;
 		} else if(this.x - this.radius <= 0 && this.xIsColiding == false){
 			this.vX = -this.vX;
-			x += 10;
+			x += wallReturn;
 			this.xIsColiding = true;
 		} else {
 			this.xIsColiding = false;
@@ -184,7 +185,7 @@ class Puck {
 
 		if(this.y >= canvas.height / devicePixelRatio && this.yIsColiding == false){
 			this.vY = -this.vY;
-			y -= 10;
+			y -= wallReturn;
 			this.yIsColiding = true;
 		} else if(this.y <= 0 && this.yIsColiding == false){
 
@@ -198,7 +199,7 @@ class Puck {
                     x = canvas.width / devicePixelRatio / 2;
             } else {
                 this.vY = -this.vY;
-                y += 10;
+                y += wallReturn;
                 this.yIsColiding = true;
             }
 
