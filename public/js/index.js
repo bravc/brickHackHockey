@@ -1,5 +1,5 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = false;
+let devMode = true;
 
 const updateTime = 1/6*100;
 
@@ -143,6 +143,8 @@ class Paddle {
 			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ){
 				let vX = (this.x - this.previousX) / (updateTime * 1000);
 				let vY = (this.y - this.previousY) / (updateTime * 1000);
+				puck.vX = vX * 10000;
+				puck.vY = vY * 10000;
 			}
 
 			soc.emit("MOVE_PADDLE", x, y);
@@ -162,7 +164,7 @@ class Puck {
         this.y = y;
         this.vX = 0;
         this.vY = 0;
-        this.acceleration = -0.2;
+        this.acceleration = -0.0;
         this.radius = 15;
         this.mass = 0.2;
     }
@@ -171,6 +173,15 @@ class Puck {
     }
     setY(y){
     	this.y = y;
+    }
+    updatePosition(){
+    	//puck velocity calculations
+	    puck.x += puck.vX;
+	    puck.y += puck.vY;
+
+	    //puck acceleration calculations
+	    puck.Vx += puck.acceleration;
+	    puck.Vy += puck.acceleration;
     }
 }
 
@@ -331,11 +342,6 @@ function drawHockeyRink() {
     ctx.fill();
     ctx.closePath();
 
-    //puck velocity calculations
-    puck.x += puck.vX;
-    puck.y += puck.vY;
+    puck.updatePosition();
 
-    //puck acceleration calculations
-    puck.Vx += puck.acceleration;
-    puck.Vy += puck.acceleration;
 }
