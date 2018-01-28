@@ -1,5 +1,5 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = false;
+let devMode = true;
 
 const updateTime = 1/6*100;
 
@@ -142,16 +142,7 @@ class Paddle {
 
 			this.y = y;
 
-			//puck collision detection
-			let dx = puck.x - this.x;
-			let dy = puck.y - this.y;
-			let radii = puck.radius + this.radius;
-			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ){
-				let vX = (this.x - this.previousX) / (updateTime * 1000);
-				let vY = (this.y - this.previousY) / (updateTime * 1000);
-				puck.vX = vX * 10000;
-				puck.vY = vY * 10000;
-			}
+
 
 			soc.emit("MOVE_PADDLE", x, y);
 		} else {
@@ -202,6 +193,28 @@ class Puck {
 		}
 		this.x = x;
 		this.y = y;
+
+        //puck collision detection with paddle 1
+        let player1Dx = puck.x - player1Paddle.x;
+        let player1Dy = puck.y - player1Paddle.y;
+        let player1Radii = puck.radius + player1Paddle.radius;
+        if ( ( player1Dx * player1Dx )  + ( player1Dy * player1Dy ) < player1Radii * player1Radii ){
+            let vX = (player1Paddle.x - player1Paddle.previousX) / (updateTime * 1000);
+            let vY = (player1Paddle.y - player1Paddle.previousY) / (updateTime * 1000);
+            puck.vX = vX * 10000;
+            puck.vY = vY * 10000;
+        }
+
+        //puck collision detection
+        let player2Dx = puck.x - player2Paddle.x;
+        let player2Dy = puck.y - player2Paddle.y;
+        let player2Radii = puck.radius + player2Paddle.radius;
+        if ( ( player2Dx * player2Dx )  + ( player2Dy * player2Dy ) < player2Radii * player2Radii ){
+            let vX = (player2Paddle.x - player2Paddle.previousX) / (updateTime * 1000);
+            let vY = (player2Paddle.y - player2Paddle.previousY) / (updateTime * 1000);
+            puck.vX = vX * 10000;
+            puck.vY = vY * 10000;
+        }
 	}
     updatePosition(){
 
@@ -388,5 +401,6 @@ function drawHockeyRink() {
     ctx.closePath();
 
     puck.updatePosition();
-    StackBlur.canvasRGB(canvas, 0, 0, canvas.width, canvas.height, 120);
+    if(!devMode)
+        StackBlur.canvasRGB(canvas, 0, 0, canvas.width, canvas.height, 120);
 }
