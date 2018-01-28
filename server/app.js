@@ -90,7 +90,7 @@ io.on('connection', function(socket){
     });
 
     socket.on("PUCK_CHANGE", function(x, vX, y, vY){
-        socket.to(roomID).emit("CHANGE_PUCK", x, vX, y, vY);
+        socket.broadcast.to(roomID).emit("CHANGE_PUCK", x, vX, y, vY);
     });
 
 });

@@ -201,12 +201,12 @@ class Puck {
 			this.yIsColiding = false;
 		}
 		this.x = x;
-		this.y = y;
+        this.y = y;
+
 	}
     updatePosition(){
 
         this.setPosition(this.x + this.vX, this.y + this.vY);
-        soc.emit("PUCK_CHANGE", this.x, this.vX, this.y, this.vY);
 
 	    //this acceleration calculations
 	    if(this.vX > 0)
@@ -218,6 +218,9 @@ class Puck {
 	    	this.vY -= this.acceleration;
 	    else if(this.vY < 0)
             this.vY += this.acceleration;
+        
+        soc.emit("PUCK_CHANGE", this.x, this.vX, this.y, this.vY);
+
     }
 }
 

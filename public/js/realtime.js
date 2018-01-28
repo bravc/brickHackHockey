@@ -114,10 +114,12 @@ $(document).ready(function() {
     });
 
     soc.on("CHANGE_PUCK", function(x, vX, y, vY){
-        puck.x = x;
-        puck.vX = vX;
-        puck.y = y;
-        puck.vY = vY;
+        let xRatio = canvas.width / devicePixelRatio / otherWidth;
+        let yRatio = canvas.height / devicePixelRatio / otherHeight;
+        puck.x = (otherWidth - x) * xRatio;
+        puck.y = (otherHeight - y) * yRatio;
+        // puck.vX = vX;
+        // puck.vY = vY;
     });
 
 });
