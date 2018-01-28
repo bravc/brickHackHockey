@@ -161,7 +161,6 @@ class Puck {
             //console.log(`puckX: ${x}, puckY: ${y}, player2Dx: ${player2Dx}, player2Dy: ${player2Dy}`);
             client2.isColiding = true;
             //console.log("CLIENT 2 COLIDING");
-            debugger;
         } else {
             client2.isColiding = false;
         }
