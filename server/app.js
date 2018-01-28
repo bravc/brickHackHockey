@@ -79,4 +79,12 @@ io.on('connection', function(socket){
         socket.broadcast.to(roomID).emit("OPPONENT_PADDLE_MOVE", x,y);
     });
 
+    socket.on("PLAYER1_GOAL", function(){
+        socket.to(roomID).emit("PLAYER1_SCORE");
+    });
+
+    socket.on("PLAYER2_GOAL", function(){
+        socket.to(roomID).emit("PLAYER2_SCORE");
+    });
+
 });

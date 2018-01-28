@@ -1,5 +1,6 @@
 var socUrl = "/"
 let soc = io();
+let otherWidth, otherHeight;
 
 
 $(document).ready(function() {
@@ -13,9 +14,6 @@ $(document).ready(function() {
 
 
     let gameboard = document.getElementById('gameBoard');
-
-    let otherWidth,
-        otherHeight;
 
     /**
      * Displays the created roomID on the page to give to friends
@@ -58,13 +56,13 @@ $(document).ready(function() {
      */
     joinBtn.on('click', function(){
         if(roomID.val() != ''){
-            soc.emit("CONNECT_ROOM", roomID.val(), gameboard.width, gameboard.height, hideForm );
+            soc.emit("CONNECT_ROOM", roomID.val(), gameboard.width / window.devicePixelRatio, gameboard.height / window.devicePixelRatio, hideForm );
         }else{
             alert("User does not exist!")
         }
     });
 
-    
+
     soc.on('connect', function(){
         console.log('Connected...');
     });
@@ -76,9 +74,9 @@ $(document).ready(function() {
     soc.on("ENTER_GAME", function(width, height){
         otherHeight = height;
         otherWidth = width;
-        console.log("Other players canvas " + width + height);
+        console.log("Other players canvas " + width + "x" + height);
 
-        soc.emit("SEND_CANVAS", gameboard.width, gameboard.height);
+        soc.emit("SEND_CANVAS", gameboard.width / window.devicePixelRatio, gameboard.height / window.devicePixelRatio);
         blur.hide();
     });
 
@@ -104,6 +102,15 @@ $(document).ready(function() {
         otherHeight = height;
         otherWidth = width;
         console.log("Other players canvas " + width + height);
+    });
+
+
+    soc.on("PLAYER1_SCORE", function(){
+        player1Paddle.setScore();
+    });
+
+    soc.on("PLAYER2_SCORE", function(){
+        player2Paddle.setScore();
     });
 
 });
