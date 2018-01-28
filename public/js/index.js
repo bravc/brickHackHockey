@@ -112,6 +112,12 @@ class Paddle {
         this.score = 0;
         this.mass = 1;
     }
+
+
+    setScore(){
+        this.score++;
+    }
+    
     setPos(x, y){
 		if(this.player == 1){
 			this.previousX = this.x;
@@ -164,24 +170,53 @@ class Puck {
         this.y = y;
         this.vX = 0;
         this.vY = 0;
-        this.acceleration = -0.0;
+        this.xIsColiding = false;
+        this.yIsColiding = false;
+        this.acceleration = 0.005;
         this.radius = 15;
         this.mass = 0.2;
     }
-    setX(x){
-    	this.x = x;
-    }
-    setY(y){
-    	this.y = y;
-    }
-    updatePosition(){
-    	//puck velocity calculations
-	    puck.x += puck.vX;
-	    puck.y += puck.vY;
+	setPosition(x,y){
+		if(this.x + this.radius >= canvas.width / devicePixelRatio && this.xIsColiding == false){
+			this.vX = -this.vX;
+			x -= 10;
+			this.xIsColiding = true;
+		} else if(this.x - this.radius <= 0 && this.xIsColiding == false){
+			this.vX = -this.vX;
+			x += 10;
+			this.xIsColiding = true;
+		} else {
+			this.xIsColiding = false;
+		}
 
-	    //puck acceleration calculations
-	    puck.Vx += puck.acceleration;
-	    puck.Vy += puck.acceleration;
+		if(this.y >= canvas.height / devicePixelRatio && this.yIsColiding == false){
+			this.vY = -this.vY;
+			y -= 10;
+			this.yIsColiding = true;
+		} else if(this.y <= 0 && this.yIsColiding == false){
+			this.vY = -this.vY;
+			y += 10;
+			this.yIsColiding = true;
+		} else {
+			this.yIsColiding = false;
+		}
+		this.x = x;
+		this.y = y;
+	}
+    updatePosition(){
+
+    	this.setPosition(this.x + this.vX, this.y + this.vY);
+
+	    //this acceleration calculations
+	    if(this.vX > 0)
+	    	this.vX -= this.acceleration;
+	    else if(this.vX < 0)
+	    	this.vX += this.acceleration;
+
+	    if(this.vY > 0)
+	    	this.vY -= this.acceleration;
+	    else if(this.vY < 0)
+	    	this.vY += this.acceleration;
     }
 }
 

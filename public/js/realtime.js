@@ -61,6 +61,8 @@ $(document).ready(function() {
             alert("User does not exist!")
         }
     });
+
+
     soc.on('connect', function(){
         console.log('Connected...');
     });
@@ -78,20 +80,37 @@ $(document).ready(function() {
         blur.hide();
     });
 
-    //
+    /**
+     * Update screen for opponent movement
+     */
     soc.on("OPPONENT_PADDLE_MOVE", function(x, y){
         player2Paddle.setPos(x, y);
     });
 
+    /**
+     * Alert user that other player left
+     */
     soc.on("EXIT_ROOM", function(){
         alert("User left!");
         blur.show();
     });
 
+    /**
+     * Exchange player canvas sizes
+     */
     soc.on("PLAYER1_CANVAS", function(width, height){
         otherHeight = height;
         otherWidth = width;
         console.log("Other players canvas " + width + height);
+    });
+
+
+    soc.on("PLAYER1_SCORE", function(){
+        player1Paddle.setScore();
+    });
+
+    soc.on("PLAYER2_SCORE", function(){
+        player2Paddle.setScore();
     });
 
 });
