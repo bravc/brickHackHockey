@@ -151,6 +151,9 @@ class Puck {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.vX = 0;
+        this.vY = 0;
+        this.acceleration = -0.2;
         this.radius = 15;
     }
     setX(x){
@@ -317,4 +320,12 @@ function drawHockeyRink() {
     ctx.arc(puck.x, puck.y, puck.radius, 0, 2 * Math.PI);
     ctx.fill();
     ctx.closePath();
+
+    //puck velocity calculations
+    puck.x += puck.vX;
+    puck.y += puck.vY;
+
+    //puck acceleration calculations
+    puck.Vx += puck.acceleration;
+    puck.Vy += puck.acceleration;
 }
