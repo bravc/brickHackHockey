@@ -116,7 +116,6 @@ $(document).ready(function() {
 
 
     soc.on("PLAYER1_SCORE", function(){
-
         player1Paddle.setScore();
         if(player1Paddle.score == 7){
             alert("Player 1 Won the game!");

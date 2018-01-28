@@ -96,8 +96,8 @@ class Puck {
             if(this.x > ((canvas1Width / 4) + 5)
                 && this.x < ((canvas1Width * 3 / 4) - 5)){
                     console.log("Goal! ");
-                    
-                    soc.emit("PLAYER1_GOAL");
+
+                    soc.emit("PLAYER1_SCORE");
                     this.vY = 0;
                     this.vX = 0;
                     y = canvas1Height / 2;
