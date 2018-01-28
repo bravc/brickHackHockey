@@ -5,10 +5,17 @@ let soc = io();
 $(document).ready(function() {
 
     let roomID = $('#roomID'),
+        createRoom = $('#createRoom');
         createBtn = $('#createRoomButton'),
         joinBtn = $('#roomEnterButton'),
         display = $('#currRoomID'),
         blur = $('#blur');
+
+
+    let gameboard = document.getElementById('gameBoard');
+
+    let otherWidth,
+        otherHeight;
 
     /**
      * Displays the created roomID on the page to give to friends
@@ -16,7 +23,7 @@ $(document).ready(function() {
     displayRoomID = (roomID) => {
         console.log("Got here");
 
-        display.text(roomID);
+        display.text("Waiting for other player in room: " + roomID);
     }
 
     /**
@@ -37,7 +44,10 @@ $(document).ready(function() {
      * then display it
      */
     createBtn.on('click', function(){
-        soc.emit("ADD_ROOM", displayRoomID);
+        let roomName = createRoom.val();
+        if(roomName != ''){
+            soc.emit("ADD_ROOM", roomName, displayRoomID);
+        }
     });
 
     /**
@@ -48,11 +58,13 @@ $(document).ready(function() {
      */
     joinBtn.on('click', function(){
         if(roomID.val() != ''){
-            soc.emit("CONNECT_ROOM", roomID.val(), hideForm);
+            soc.emit("CONNECT_ROOM", roomID.val(), gameboard.width, gameboard.height, hideForm );
         }else{
             alert("User does not exist!")
         }
     });
+
+    
     soc.on('connect', function(){
         console.log('Connected...');
     });
@@ -61,17 +73,37 @@ $(document).ready(function() {
      * When both parties have joined,
      * hide the menu
      */
-    soc.on("ENTER_GAME", function(){
+    soc.on("ENTER_GAME", function(width, height){
+        otherHeight = height;
+        otherWidth = width;
+        console.log("Other players canvas " + width + height);
+
+        soc.emit("SEND_CANVAS", gameboard.width, gameboard.height);
         blur.hide();
     });
 
-    soc.on("OPPONENT_PUCK_MOVE", function(x, y){
+    /**
+     * Update screen for opponent movement
+     */
+    soc.on("OPPONENT_PADDLE_MOVE", function(x, y){
         player2Paddle.setPos(x, y);
     });
 
+    /**
+     * Alert user that other player left
+     */
     soc.on("EXIT_ROOM", function(){
         alert("User left!");
         blur.show();
+    });
+
+    /**
+     * Exchange player canvas sizes
+     */
+    soc.on("PLAYER1_CANVAS", function(width, height){
+        otherHeight = height;
+        otherWidth = width;
+        console.log("Other players canvas " + width + height);
     });
 
 });
