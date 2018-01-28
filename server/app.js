@@ -95,7 +95,9 @@ class Puck {
             //Goal scored and puck replaced at center ice
             if(this.x > ((canvas1Width / 4) + 5)
                 && this.x < ((canvas1Width * 3 / 4) - 5)){
-                    socket.emit("PLAYER1_GOAL");
+                    console.log("Goal! ");
+                    
+                    soc.emit("PLAYER1_GOAL");
                     this.vY = 0;
                     this.vX = 0;
                     y = canvas1Height / 2;
@@ -180,11 +182,13 @@ class Puck {
 let client1;
 let client2;
 let puck;
+let soc;
 
 
 io.on('connection', function(socket){
     //When you connect to the site, tell the server
     console.log('Connected to socket ' + socket.id);
+    soc = socket;
 
     let timer = setInterval(checkPuckCollision, updateTime);
 

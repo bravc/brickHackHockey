@@ -252,11 +252,17 @@ function drawHockeyRink() {
 	let normalizedWidth = canvas.width / devicePixelRatio;
 	let normalizedHeight = canvas.height / devicePixelRatio;
 
+    //clear background
+    ctx.fillStyle = "#000000";
+    ctx.beginPath();
+    ctx.rect(0,0, normalizedWidth, normalizedHeight);
+    ctx.fill();
+    ctx.closePath();
+
     //draw in arena
 
     //white background
     ctx.strokeStyle = "#0000FF";
-    ctx.fillStyle = "#000000";
     ctx.lineWidth = 4;
     roundRect(ctx, 2, 2, normalizedWidth - 4, normalizedHeight - 4, 25, true, true);
 
