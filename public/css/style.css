@@ -140,3 +140,34 @@ button span:after{
 	margin-right: auto;
 	display: block;
 }
+
+#yeahNo{
+	text-align: center;
+	color: white;
+	visibility: hidden;
+	height: 0px;
+	width: 0px;
+	display: none;
+}
+
+#yeahNo img{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media (min-width: 600px){
+	#yeahNo{
+		visibility: visible;
+		height: 100%;
+		width: 100%;
+		display: block;
+	}
+
+	form{
+		visibility: hidden;
+	}
+
+	button{
+		visibility: hidden;
+	}
+}
