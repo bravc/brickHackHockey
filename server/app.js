@@ -123,9 +123,9 @@ class Puck {
                 puck.vX = -vX * accelerationConstant;
                 puck.vY = -vY * accelerationConstant;
             }
-            console.log(`puckX: ${x}, puckY: ${y}, player1Dx: ${player1Dx}, player1Dy: ${player1Dy}`);
+            //console.log(`puckX: ${x}, puckY: ${y}, player1Dx: ${player1Dx}, player1Dy: ${player1Dy}`);
             client1.isColiding = true;
-            console.log("CLIENT 1 COLIDING");
+            //console.log("CLIENT 1 COLIDING");
         } else {
             client1.isColiding = false;
         }
@@ -141,9 +141,9 @@ class Puck {
                 puck.vX = vX * accelerationConstant;
                 puck.vY = vY * accelerationConstant;
             }
-            console.log(`puckX: ${x}, puckY: ${y}, player2Dx: ${player2Dx}, player2Dy: ${player2Dy}`);
+            //console.log(`puckX: ${x}, puckY: ${y}, player2Dx: ${player2Dx}, player2Dy: ${player2Dy}`);
             client2.isColiding = true;
-            console.log("CLIENT 2 COLIDING");
+            //console.log("CLIENT 2 COLIDING");
             debugger;
         } else {
             client2.isColiding = false;
