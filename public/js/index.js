@@ -1,5 +1,5 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = false;
+let devMode = true;
 
 //const socket = require('./realtime');
 
@@ -107,26 +107,40 @@ class Paddle {
         this.y = y;
         this.player = player;
         this.radius = 40;
+        this.score = 0;
     }
     setPos(x, y){
-    	if(x > canvas.width / devicePixelRatio - this.radius - 2){
-    		x = canvas.width / devicePixelRatio - this.radius - 2;
-    	}
-    	else if(x < this.radius + 2){
-    		x = this.radius + 2;
-    	}
+		if(this.player == 1){
+			if(x > canvas.width / devicePixelRatio - this.radius - 2){
+    			x = canvas.width / devicePixelRatio - this.radius - 2;
+	    	}
+	    	else if(x < this.radius + 2){
+	    		x = this.radius + 2;
+	    	}
 
-    	this.x = x;
+	    	this.x = x;
 
-    	if(y < canvas.height / devicePixelRatio / 2 + this.radius){
-    		y = canvas.height / devicePixelRatio / 2 + this.radius;
-    	}
-		else if(y > canvas.height / devicePixelRatio - this.radius){
-    		y = canvas.height / devicePixelRatio - this.radius;
-    	}
+	    	if(y < canvas.height / devicePixelRatio / 2 + this.radius){
+	    		y = canvas.height / devicePixelRatio / 2 + this.radius;
+	    	}
+			else if(y > canvas.height / devicePixelRatio - this.radius - 2){
+	    		y = canvas.height / devicePixelRatio - this.radius - 2;
+	    	}
 
-		this.y = y;
-		soc.emit("MOVE_PUCK", x, y);
+			this.y = y;
+
+			//puck collision detection
+			let dx = puck.x - this.x;
+			let dy = puck.y - this.y;
+			let radii = puck.radius + this.radius;
+			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ){
+				console.log("Collision");
+			}
+
+			soc.emit("MOVE_PADDLE", x, y);
+		} else {
+
+		}
     }
 }
 
@@ -135,6 +149,9 @@ class Puck {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.vX = 0;
+        this.vY = 0;
+        this.acceleration = -0.2;
         this.radius = 15;
     }
     setX(x){
@@ -180,7 +197,7 @@ $(document).ready(function() {
 
 
     //start the canvas updates
-    timer = setInterval(drawHockeyRink, 1);
+    timer = setInterval(drawHockeyRink, 1/6*100);
 
 
     // Set up touch events for mobile, etc
@@ -205,7 +222,7 @@ function aspectRatio() {
     let height = $("body").height();
     let ratio = width / height;
 
-    let destinationRatio = 94 / 100;
+    let destinationRatio = 96 / 100;
 
     if (ratio == destinationRatio) {
         return [width, height];
@@ -235,6 +252,8 @@ function drawHockeyRink() {
     let goalStart = normalizedWidth / 4;
     let goalEnd = normalizedWidth / 4 * 3;
 
+
+    //goal line color
     ctx.strokeStyle = "#FFFFFF";
 
 
@@ -253,6 +272,7 @@ function drawHockeyRink() {
     ctx.closePath();
 
 
+    //centerline color and width
     ctx.strokeStyle = "#FF0000";
     ctx.lineWidth = 2;
 
@@ -270,9 +290,9 @@ function drawHockeyRink() {
 	ctx.rotate(Math.PI/2);
 	ctx.textAlign = "center";
 	ctx.font = "30px Arial";
-	ctx.fillStyle = "#000000";
-	ctx.fillText("0", normalizedHeight / 2 - 20, 10); //player 1
-	ctx.fillText("0", normalizedHeight / 2 + 20, 10); //player 2
+	ctx.fillStyle = "#000000"; //score font color
+	ctx.fillText(player1Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 1
+	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 + 20, 10); //player 2
 	ctx.restore();
 
     //paddle color
@@ -298,18 +318,12 @@ function drawHockeyRink() {
     ctx.arc(puck.x, puck.y, puck.radius, 0, 2 * Math.PI);
     ctx.fill();
     ctx.closePath();
+
+    //puck velocity calculations
+    puck.x += puck.vX;
+    puck.y += puck.vY;
+
+    //puck acceleration calculations
+    puck.Vx += puck.acceleration;
+    puck.Vy += puck.acceleration;
 }
-
-
-
-
-function resizeCanvas() {
-    let canvas = document.getElementById("gameBoard");
-    let newSize = canvas.height / (16 / 22);
-    //canvas.width = newSize;
-}
-
-//make sure the canvas stays at 16:9
-$(window).resize(function() {
-    resizeCanvas();
-});

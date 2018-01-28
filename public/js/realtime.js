@@ -5,10 +5,17 @@ let soc = io();
 $(document).ready(function() {
 
     let roomID = $('#roomID'),
+        createRoom = $('#createRoom');
         createBtn = $('#createRoomButton'),
         joinBtn = $('#roomEnterButton'),
         display = $('#currRoomID'),
         blur = $('#blur');
+
+
+    let gameboard = document.getElementById('gameBoard');
+
+    let otherWidth,
+        otherHeight;
 
     /**
      * Displays the created roomID on the page to give to friends
@@ -16,17 +23,17 @@ $(document).ready(function() {
     displayRoomID = (roomID) => {
         console.log("Got here");
 
-        display.text(roomID);
+        display.text("Waiting for other player in room: " + roomID);
     }
 
     /**
      * Callback used by server to either hide div or alert of error
      */
     hideForm = (roomExists) => {
-        if(roomExists){
+        if(roomExists === ""){
             blur.hide();
         }else{
-            alert("Room is full!");
+            alert(roomExists);
             roomID.attr('value', '');
         }
     }
@@ -37,7 +44,10 @@ $(document).ready(function() {
      * then display it
      */
     createBtn.on('click', function(){
-        soc.emit("ADD_ROOM", displayRoomID);
+        let roomName = createRoom.val();
+        if(roomName != ''){
+            soc.emit("ADD_ROOM", roomName, displayRoomID);
+        }
     });
 
     /**
@@ -48,7 +58,7 @@ $(document).ready(function() {
      */
     joinBtn.on('click', function(){
         if(roomID.val() != ''){
-            soc.emit("CONNECT_ROOM", roomID.val(), hideForm);
+            soc.emit("CONNECT_ROOM", roomID.val(), gameboard.width, gameboard.height, hideForm );
         }else{
             alert("User does not exist!")
         }
@@ -61,17 +71,29 @@ $(document).ready(function() {
      * When both parties have joined,
      * hide the menu
      */
-    soc.on("ENTER_GAME", function(){
+    soc.on("ENTER_GAME", function(width, height){
+        otherHeight = height;
+        otherWidth = width;
+        console.log("Other players canvas " + width + height);
+
+        soc.emit("SEND_CANVAS", gameboard.width, gameboard.height);
         blur.hide();
     });
 
-    soc.on("OPPONENT_PUCK_MOVE", function(x, y){
+    //
+    soc.on("OPPONENT_PADDLE_MOVE", function(x, y){
         player2Paddle.setPos(x, y);
     });
 
     soc.on("EXIT_ROOM", function(){
         alert("User left!");
         blur.show();
+    });
+
+    soc.on("PLAYER1_CANVAS", function(width, height){
+        otherHeight = height;
+        otherWidth = width;
+        console.log("Other players canvas " + width + height);
     });
 
 });
