@@ -130,6 +130,10 @@ button span:after{
 	color: white;
 }
 
+#gamePieces{
+	display: none;
+}
+
 #gameBoard{
 	height:100%;
 	margin-left: auto;
