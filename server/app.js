@@ -69,8 +69,8 @@ io.on('connection', function(socket){
         socket.broadcast.to(roomID).emit("PLAYER1_CANVAS", width, height);
     });
 
-    socket.on("MOVE_PUCK", function(x ,y){
-        socket.broadcast.to(roomID).emit("OPPONENT_PUCK_MOVE", x,y);
+    socket.on("MOVE_PADDLE", function(x ,y){
+        socket.broadcast.to(roomID).emit("OPPONENT_PADDLE_MOVE", x,y);
     });
 
 });

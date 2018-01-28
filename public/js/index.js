@@ -128,7 +128,7 @@ class Paddle {
 
 		this.y = y;
 		if(this.player == 1)
-			soc.emit("MOVE_PUCK", x, y);
+			soc.emit("MOVE_PADDLE", x, y);
     }
 }
 
