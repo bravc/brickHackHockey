@@ -1,7 +1,8 @@
 let pixelRatio = window.devicePixelRatio;
 let devMode = false;
 
-const updateTime = 1/6*100;
+const updateTime = 15;
+
 
 let canvas;
 let ctx;
@@ -111,6 +112,7 @@ class Paddle {
         this.radius = 40;
         this.score = 0;
         this.mass = 1;
+        this.isColiding = false;
     }
 
 
@@ -142,18 +144,10 @@ class Paddle {
 
 			this.y = y;
 
-			//puck collision detection
-			let dx = puck.x - this.x;
-			let dy = puck.y - this.y;
-			let radii = puck.radius + this.radius;
-			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ){
-				let vX = (this.x - this.previousX) / (updateTime * 1000);
-				let vY = (this.y - this.previousY) / (updateTime * 1000);
-				puck.vX = vX * 10000;
-				puck.vY = vY * 10000;
-			}
+            //console.log(`canvasWidth: ${canvas.width / devicePixelRatio}, canvasHeight: ${canvas.height / devicePixelRatio}, X: ${x}, Y: ${y}`);
 
-			soc.emit("MOVE_PADDLE", x, y);
+
+			soc.emit("MOVE_PADDLE", x, y, clientNumber);
 		} else {
 			let xRatio = canvas.width / devicePixelRatio / otherWidth;
 			let yRatio = canvas.height / devicePixelRatio / otherHeight;
@@ -163,65 +157,20 @@ class Paddle {
     }
 }
 
-//represents the puck
-class Puck {
-    constructor(x, y) {
+class Puck{
+    constructor(x, y, vX, vY){
         this.x = x;
         this.y = y;
-        this.vX = 0;
-        this.vY = 0;
-        this.xIsColiding = false;
-        this.yIsColiding = false;
-        this.acceleration = 0.005;
+        this.vX = vX;
+        this.vY = vY;
         this.radius = 15;
-        this.mass = 0.2;
-    }
-	setPosition(x,y){
-		if(this.x + this.radius >= canvas.width / devicePixelRatio && this.xIsColiding == false){
-			this.vX = -this.vX;
-			x -= 10;
-			this.xIsColiding = true;
-		} else if(this.x - this.radius <= 0 && this.xIsColiding == false){
-			this.vX = -this.vX;
-			x += 10;
-			this.xIsColiding = true;
-		} else {
-			this.xIsColiding = false;
-		}
-
-		if(this.y >= canvas.height / devicePixelRatio && this.yIsColiding == false){
-			this.vY = -this.vY;
-			y -= 10;
-			this.yIsColiding = true;
-		} else if(this.y <= 0 && this.yIsColiding == false){
-			this.vY = -this.vY;
-			y += 10;
-			this.yIsColiding = true;
-		} else {
-			this.yIsColiding = false;
-		}
-		this.x = x;
-		this.y = y;
-	}
-    updatePosition(){
-
-    	this.setPosition(this.x + this.vX, this.y + this.vY);
-
-	    //this acceleration calculations
-	    if(this.vX > 0)
-	    	this.vX -= this.acceleration;
-	    else if(this.vX < 0)
-	    	this.vX += this.acceleration;
-
-	    if(this.vY > 0)
-	    	this.vY -= this.acceleration;
-	    else if(this.vY < 0)
-	    	this.vY += this.acceleration;
+        this.arriveTime = new Date().getTime();
+        this.diffX = 0;
+        this.diffY = 0;
+        this.diffVX = 0;
+        this.diffVY = 0;
     }
 }
-
-
-
 
 // Get the position of a touch relative to the canvas
 function getTouchPos(canvasDom, touchEvent) {
@@ -248,7 +197,7 @@ $(document).ready(function() {
     player2Paddle = new Paddle(canvas.width / devicePixelRatio / 2, 100, 2);
 
     //puck
-    puck = new Puck(canvas.width / devicePixelRatio / 2, canvas.height / devicePixelRatio / 2);
+    puck = new Puck(canvas.width / devicePixelRatio / 2, canvas.height / devicePixelRatio / 2, 0 ,0);
 
     //hide the login form inititally
     if (devMode) {
@@ -331,7 +280,7 @@ function drawHockeyRink() {
     ctx.stroke();
     ctx.closePath();
 
-    ctx.strokeStyle = "FF0000";
+    ctx.strokeStyle = "#FF0000";
     ctx.lineWidth = 4;
 
     //center-ice Circle
@@ -359,34 +308,36 @@ function drawHockeyRink() {
 	ctx.textAlign = "center";
 	ctx.font = "30px Arial";
 	ctx.fillStyle = "#FFFFFF"; //score font color
-	ctx.fillText(player1Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 1
-	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 + 20, 10); //player 2
+	ctx.fillText(player1Paddle.score.toString(), normalizedHeight / 2 + 20, 10); //player 1
+	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 2
 	ctx.restore();
 
-    //paddle color
-    ctx.fillStyle = "#3498db";
+    //Get paddle and puck images
+    let paddleImg=document.getElementById("paddle");
+    let puckImg=document.getElementById("puck");
 
     //player 1 paddle
     ctx.beginPath();
     ctx.arc(player1Paddle.x, player1Paddle.y, player1Paddle.radius, 0, 2 * Math.PI);
-    ctx.fill();
+    ctx.drawImage(paddleImg, player1Paddle.x - player1Paddle.radius, player1Paddle.y - player1Paddle.radius);
     ctx.closePath();
 
     //player 2 paddle
     ctx.beginPath();
     ctx.arc(player2Paddle.x, player2Paddle.y, player2Paddle.radius, 0, 2 * Math.PI);
-    ctx.fill();
+    ctx.drawImage(paddleImg, player2Paddle.x - player2Paddle.radius, player2Paddle.y - player2Paddle.radius);
     ctx.closePath();
 
-    //puck color
-    ctx.fillStyle = "#ff4757";
+
+    let step = 100 / 45 * .5;
+    let delta = 1 - step * ((puck.arriveTime - new Date().getTime()) / 100);
 
     //puck
     ctx.beginPath();
     ctx.arc(puck.x, puck.y, puck.radius, 0, 2 * Math.PI);
-    ctx.fill();
+    ctx.drawImage(puckImg, puck.x - puck.radius, puck.y - puck.radius);
     ctx.closePath();
 
-    puck.updatePosition();
-    StackBlur.canvasRGB(canvas, 0, 0, canvas.width, canvas.height, 120);
+    if(typeof otherWidth == 'undefined' && !devMode)
+        StackBlur.canvasRGB(canvas, 0, 0, canvas.width, canvas.height, 120);
 }
