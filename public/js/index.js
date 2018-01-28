@@ -4,6 +4,8 @@ let devMode = true;
 const updateTime = 1/6*100;
 const minVelocity = 300;
 const wallReturn = 3;
+const accelerationConstant = 10000;
+const velocityMultiple = 1000;
 
 let canvas;
 let ctx;
@@ -215,10 +217,10 @@ class Puck {
         let player1Radii = puck.radius + player1Paddle.radius;
         if ( ( player1Dx * player1Dx )  + ( player1Dy * player1Dy ) < player1Radii * player1Radii){
             if(!player1Paddle.isColiding){
-                let vX = (player1Paddle.x - player1Paddle.previousX) / (updateTime * 1000);
-                let vY = (player1Paddle.y - player1Paddle.previousY) / (updateTime * 1000);
-                puck.vX = vX * 10000;
-                puck.vY = vY * 10000;
+                let vX = (player1Paddle.x - player1Paddle.previousX) / (updateTime * velocityMultiple);
+                let vY = (player1Paddle.y - player1Paddle.previousY) / (updateTime * velocityMultiple);
+                puck.vX = vX * accelerationConstant;
+                puck.vY = vY * accelerationConstant;
             }
             player1Paddle.isColiding = true;
         } else {
@@ -231,10 +233,10 @@ class Puck {
         let player2Radii = puck.radius + player2Paddle.radius;
         if ( ( player2Dx * player2Dx )  + ( player2Dy * player2Dy ) < player2Radii * player2Radii ){
             if(!player2Paddle.isColiding){
-                let vX = (player2Paddle.x - player2Paddle.previousX) / (updateTime * 1000);
-                let vY = (player2Paddle.y - player2Paddle.previousY) / (updateTime * 1000);
-                puck.vX = vX * 10000;
-                puck.vY = vY * 10000;
+                let vX = (player2Paddle.x - player2Paddle.previousX) / (updateTime * velocityMultiple);
+                let vY = (player2Paddle.y - player2Paddle.previousY) / (updateTime * velocityMultiple);
+                puck.vX = vX * accelerationConstant;
+                puck.vY = vY * accelerationConstant;
             }
             player2Paddle.isColiding = true;
         } else {
@@ -380,7 +382,7 @@ function drawHockeyRink() {
     ctx.stroke();
     ctx.closePath();
 
-    ctx.strokeStyle = "FF0000";
+    ctx.strokeStyle = "#FF0000";
     ctx.lineWidth = 4;
 
     //center-ice Circle
