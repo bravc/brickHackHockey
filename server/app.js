@@ -15,7 +15,8 @@ server.listen(PORT, function(){
 let openRooms = {};
 let roomID = 0;
 
-let puckPos;
+let canvas1,
+    canvas2;
 
 io.on('connection', function(socket){
     //When you connect to the site, tell the server
@@ -44,6 +45,7 @@ io.on('connection', function(socket){
                 openRooms[roomID] = 2;
                 socket.join(roomID);
                 console.log("Joining room: " + roomID);
+                canvas2 = [width, height];
                 socket.to(roomID).emit("ENTER_GAME", width, height);
                 callback('');
             }else{
@@ -71,6 +73,7 @@ io.on('connection', function(socket){
      * Send canvas to other player
      */
     socket.on("SEND_CANVAS", function(width, height){
+        canvas1 = [width, height];
         socket.broadcast.to(roomID).emit("PLAYER1_CANVAS", width, height);
     });
 

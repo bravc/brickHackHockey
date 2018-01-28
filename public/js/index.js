@@ -2,6 +2,7 @@ let pixelRatio = window.devicePixelRatio;
 let devMode = true;
 
 const updateTime = 1/6*100;
+const minVelocity = 300;
 
 let canvas;
 let ctx;
@@ -187,6 +188,7 @@ class Puck {
 			this.yIsColiding = true;
 		} else if(this.y <= 0 && this.yIsColiding == false){
 
+            //Goal scored and puck replaced at center ice
             if(this.x > ((canvas.width / devicePixelRatio / 4) + 5)
                 && this.x < ((canvas.width / devicePixelRatio * 3 / 4) - 5)){
                     player1Paddle.setScore();
@@ -248,6 +250,7 @@ class Puck {
         this.setPosition(this.x + this.vX, this.y + this.vY);
 
 	    //this acceleration calculations
+<<<<<<< HEAD
 	    if(this.vX > 0)
 	    	this.vX -= this.acceleration;
 	    else if(this.vX < 0)
@@ -260,6 +263,28 @@ class Puck {
         
         soc.emit("PUCK_CHANGE", this.x, this.vX, this.y, this.vY);
 
+=======
+	    if(this.vX > 0){
+            if(this.vX - this.acceleration > minVelocity){
+                this.vX -= this.acceleration;
+            }
+        }
+	    else if(this.vX < 0){
+            if(this.vX + this.acceleration > -minVelocity){
+	    	  this.vX += this.acceleration;
+            }
+        }
+
+	    if(this.vY > 0){
+            if(this.vY - this.acceleration > minVelocity){
+                this.vY -= this.acceleration;
+            }
+	    } else if(this.vY < 0){
+            if(this.vY + this.acceleration > -minVelocity){
+                this.vY += this.acceleration;
+            }
+        }
+>>>>>>> af36be14f5de36b30a82b2182990989e76bec6e1
     }
 }
 
@@ -431,6 +456,6 @@ function drawHockeyRink() {
     ctx.closePath();
 
     puck.updatePosition();
-    if(!devMode)
+    if(typeof otherWidth == 'undefined' && !devMode)
         StackBlur.canvasRGB(canvas, 0, 0, canvas.width, canvas.height, 120);
 }
