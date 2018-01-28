@@ -301,17 +301,3 @@ function drawHockeyRink() {
     ctx.fill();
     ctx.closePath();
 }
-
-
-
-
-function resizeCanvas() {
-    let canvas = document.getElementById("gameBoard");
-    let newSize = canvas.height / (16 / 22);
-    //canvas.width = newSize;
-}
-
-//make sure the canvas stays at 16:9
-$(window).resize(function() {
-    resizeCanvas();
-});
