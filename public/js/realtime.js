@@ -118,10 +118,18 @@ $(document).ready(function() {
     soc.on("PLAYER1_SCORE", function(){
 
         player1Paddle.setScore();
+        if(player1Paddle.score == 7){
+            alert("Player 1 Won the game!");
+            blur.show();
+        }
     });
 
     soc.on("PLAYER2_SCORE", function(){
         player2Paddle.setScore();
+        if(player2Paddle.score == 7){
+            alert("Player 1 Won the game!");
+            blur.show();
+        }
     });
 
     soc.on("CHANGE_PUCK", function(x, vX, y, vY){

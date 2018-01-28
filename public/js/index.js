@@ -185,6 +185,8 @@ $(document).ready(function() {
     canvas = document.getElementById("gameBoard");
     ctx = canvas.getContext("2d");
 
+    let images = document.getElementById("gamePieces");
+    images.style.visibility = 'hidden';
 
 
     //scale the canvas properly
