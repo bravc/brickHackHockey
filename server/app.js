@@ -36,13 +36,13 @@ io.on('connection', function(socket){
      * alert the client. Otherwise, join the room
      * and enter the game
      */
-    socket.on('CONNECT_ROOM', function(roomID, callback){
+    socket.on('CONNECT_ROOM', function(roomID, width, height, callback){
         if (roomID in openRooms) {
             if(openRooms[roomID] < 2){
                 openRooms[roomID] = 2;
                 socket.join(roomID);
                 console.log("Joining room: " + roomID);
-                socket.to(roomID).emit("ENTER_GAME");
+                socket.to(roomID).emit("ENTER_GAME", width, height);
                 callback('');
             }else{
                 callback('Room is full!');
@@ -63,6 +63,10 @@ io.on('connection', function(socket){
             socket.leave(roomID);
             delete openRooms[roomID];
         }
+    });
+
+    socket.on("SEND_CANVAS", function(width, height){
+        socket.broadcast.to(roomID).emit("PLAYER1_CANVAS", width, height);
     });
 
     socket.on("MOVE_PUCK", function(x ,y){

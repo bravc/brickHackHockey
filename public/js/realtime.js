@@ -11,6 +11,12 @@ $(document).ready(function() {
         display = $('#currRoomID'),
         blur = $('#blur');
 
+
+    let gameboard = document.getElementById('gameBoard');
+
+    let otherWidth,
+        otherHeight;
+
     /**
      * Displays the created roomID on the page to give to friends
      */
@@ -52,7 +58,7 @@ $(document).ready(function() {
      */
     joinBtn.on('click', function(){
         if(roomID.val() != ''){
-            soc.emit("CONNECT_ROOM", roomID.val(), hideForm);
+            soc.emit("CONNECT_ROOM", roomID.val(), gameboard.width, gameboard.height, hideForm );
         }else{
             alert("User does not exist!")
         }
@@ -65,7 +71,12 @@ $(document).ready(function() {
      * When both parties have joined,
      * hide the menu
      */
-    soc.on("ENTER_GAME", function(){
+    soc.on("ENTER_GAME", function(width, height){
+        otherHeight = height;
+        otherWidth = width;
+        console.log("Other players canvas " + width + height);
+
+        soc.emit("SEND_CANVAS", gameboard.width, gameboard.height);
         blur.hide();
     });
 
@@ -76,6 +87,12 @@ $(document).ready(function() {
     soc.on("EXIT_ROOM", function(){
         alert("User left!");
         blur.show();
+    });
+
+    soc.on("PLAYER1_CANVAS", function(width, height){
+        otherHeight = height;
+        otherWidth = width;
+        console.log("Other players canvas " + width + height);
     });
 
 });
