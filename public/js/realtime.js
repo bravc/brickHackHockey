@@ -133,11 +133,14 @@ $(document).ready(function() {
     });
 
     soc.on("CHANGE_PUCK", function(x, vX, y, vY){
-        let diffX = puck.x - x;
-        let diffY = puck.y - y;
-        let diffVX = puck.vX - vX;
-        let diffVY = puck.vY - vY;
-        let arriveTime = new Date().getTime() + timeBetweenTicks * updateRate
+        puck.diffX = puck.x - x;
+        puck.diffY = puck.y - y;
+        puck.diffVX = puck.vX - vX;
+        puck.diffVY = puck.vY - vY;
+
+        puck.arriveTime = new Date().getTime() + 45 * .5;
+
+
 
         if(clientNumber == 1){
             puck.x = (puck.x + canvas.width / devicePixelRatio - x) / 2;

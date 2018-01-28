@@ -1,5 +1,5 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = true;
+let devMode = false;
 
 const updateTime = 15;
 
@@ -164,6 +164,11 @@ class Puck{
         this.vX = vX;
         this.vY = vY;
         this.radius = 15;
+        this.arriveTime = new Date().getTime();
+        this.diffX = 0;
+        this.diffY = 0;
+        this.diffVX = 0;
+        this.diffVY = 0;
     }
 }
 
@@ -324,6 +329,10 @@ function drawHockeyRink() {
     ctx.arc(player2Paddle.x, player2Paddle.y, player2Paddle.radius, 0, 2 * Math.PI);
     ctx.drawImage(paddleImg, player2Paddle.x - player2Paddle.radius, player2Paddle.y - player2Paddle.radius);
     ctx.closePath();
+
+
+    let step = 100 / 45 * .5;
+    let delta = 1 - step * ((puck.arriveTime - new Date().getTime()) / 100);
 
     //puck
     ctx.beginPath();
