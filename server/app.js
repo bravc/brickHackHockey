@@ -62,8 +62,8 @@ class Puck {
         let canvas2Width = canvas2[0];
         let canvas2Height = canvas2[1];
 
-        let canvasWidthRatio = canvas1Width / canvas2Width;
-        let canvasHeightRatio = canvas1Height / canvas2Height;
+        let canvasWidthRatio = canvas1Width / canvas1Width;
+        let canvasHeightRatio = canvas1Height / canvas1Height;
 
         let client1X = client1.x;
         let client1Y = client1.y;
@@ -95,7 +95,7 @@ class Puck {
             //Goal scored and puck replaced at center ice
             if(this.x > ((canvas1Width / 4) + 5)
                 && this.x < ((canvas1Width * 3 / 4) - 5)){
-                    client1.setScore();
+                    socket.emit("PLAYER1_GOAL");
                     this.vY = 0;
                     this.vX = 0;
                     y = canvas1Height / 2;
