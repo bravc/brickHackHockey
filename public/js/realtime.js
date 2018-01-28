@@ -78,6 +78,10 @@ $(document).ready(function() {
     soc.on("ENTER_GAME", function(width, height){
         otherHeight = height;
         otherWidth = width;
+
+        if(canvas.width / devicePixelRatio > otherWidth || canvas.height / devicePixelRatio > otherHeight)
+            scaleCanvas(canvas, ctx, otherWidth, otherHeight);
+
         console.log("Other players canvas " + width + "x" + height);
 
         soc.emit("SEND_CANVAS", gameboard.width / window.devicePixelRatio, gameboard.height / window.devicePixelRatio, player1Paddle.x, player1Paddle.y);
@@ -105,11 +109,14 @@ $(document).ready(function() {
     soc.on("PLAYER1_CANVAS", function(width, height){
         otherHeight = height;
         otherWidth = width;
+        if(canvas.width / devicePixelRatio > otherWidth || canvas.height / devicePixelRatio > otherHeight)
+            scaleCanvas(canvas, ctx, otherWidth, otherHeight);
         console.log("Other players canvas " + width + height);
     });
 
 
     soc.on("PLAYER1_SCORE", function(){
+
         player1Paddle.setScore();
         if(player1Paddle.score == 7){
             alert("Player 1 Won the game!");
@@ -125,25 +132,30 @@ $(document).ready(function() {
         }
     });
 
-    soc.on("CHANGE_PUCK_1", function(x, vX, y, vY){
-        if(clientNumber == 1){
-            puck.x = canvas.width / devicePixelRatio - x;
-            puck.y = canvas.height / devicePixelRatio - y;
+    soc.on("CHANGE_PUCK", function(x, vX, y, vY){
+        let diffX = puck.x - x;
+        let diffY = puck.y - y;
+        let diffVX = puck.vX - vX;
+        let diffVY = puck.vY - vY;
+        let arriveTime = new Date().getTime() + timeBetweenTicks * updateRate
 
-            console.log(`x: ${x}, y: ${y} `);
+        if(clientNumber == 1){
+            puck.x = (puck.x + canvas.width / devicePixelRatio - x) / 2;
+            puck.y = (puck.y + canvas.height / devicePixelRatio - y) / 2;
+
+            //console.log(`x: ${x}, y: ${y} `);
             puck.vX = vX;
             puck.vY = vY;
             //console.log(`X: ${puck.x}, Y: ${puck.y}, vX: ${puck.vX}, vY: ${puck.vY}`);
-        }
-    });
-    soc.on("CHANGE_PUCK_2", function(x, vX, y, vY){
-        if(clientNumber == 2){
-            puck.x = x;
-            puck.y = y;
+        } else if(clientNumber == 2){
+            puck.x = (puck.x + x) / 2;
+            puck.y = (puck.y + y) / 2;
+
+            //console.log(`x: ${x}, y: ${y} `);
             puck.vX = -vX;
             puck.vY = -vY;
+            //console.log(`X: ${puck.x}, Y: ${puck.y}, vX: ${puck.vX}, vY: ${puck.vY}`);
         }
     });
-
 
 });

@@ -2,14 +2,17 @@ const express = require('express');
 const uuid = require('uuid/v4');
 const app = express();
 const server = require('http').Server(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+    transports: ["websocket", "polling"],
+    serveClient: false
+});
 const PORT = process.env.PORT || 3000;
 
-const updateTime = 1/6*100;
+const updateTime = 45;
 const minVelocity = 300;
 const wallReturn = 3;
 const accelerationConstant = 10000;
-const velocityMultiple = 1000;
+const velocityMultiple = 500;
 
 app.use(express.static(__dirname + '/../public'));
 
@@ -178,6 +181,7 @@ let client1;
 let client2;
 let puck;
 
+
 io.on('connection', function(socket){
     //When you connect to the site, tell the server
     console.log('Connected to socket ' + socket.id);
@@ -286,8 +290,7 @@ io.on('connection', function(socket){
             let canvasWidthRatio = canvas1Width / canvas2Width;
             let canvasHeightRatio = canvas1Height / canvas2Height;
 
-            socket.to(roomID).emit("CHANGE_PUCK_1", puck.x, puck.vX, puck.y, puck.vY);
-            socket.to(roomID).emit("CHANGE_PUCK_2", puck.x, puck.vX, puck.y, puck.vY);
+            socket.to(roomID).emit("CHANGE_PUCK", puck.x, puck.vX, puck.y, puck.vY);
 
         }
     }
