@@ -1,5 +1,5 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = true;
+let devMode = false;
 
 const updateTime = 15;
 
