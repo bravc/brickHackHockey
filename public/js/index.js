@@ -187,6 +187,7 @@ class Puck {
 			this.yIsColiding = true;
 		} else if(this.y <= 0 && this.yIsColiding == false){
 
+            //Goal scored and puck replaced at center ice
             if(this.x > ((canvas.width / devicePixelRatio / 4) + 5)
                 && this.x < ((canvas.width / devicePixelRatio * 3 / 4) - 5)){
                     player1Paddle.setScore();
@@ -243,15 +244,26 @@ class Puck {
     	this.setPosition(this.x + this.vX, this.y + this.vY);
 
 	    //this acceleration calculations
-	    if(this.vX > 0)
-	    	this.vX -= this.acceleration;
-	    else if(this.vX < 0)
-	    	this.vX += this.acceleration;
+	    if(this.vX > 0){
+            if(this.vX - this.acceleration > 300){
+                this.vX -= this.acceleration;
+            }
+        }
+	    else if(this.vX < 0){
+            if(this.vX + this.acceleration > -300){
+	    	  this.vX += this.acceleration;
+            }
+        }
 
-	    if(this.vY > 0)
-	    	this.vY -= this.acceleration;
-	    else if(this.vY < 0)
-	    	this.vY += this.acceleration;
+	    if(this.vY > 0){
+            if(this.vY - this.acceleration > 300){
+                this.vY -= this.acceleration;
+            }
+	    } else if(this.vY < 0){
+            if(this.vY + this.acceleration > -300){
+                this.vY += this.acceleration;
+            }
+        }
     }
 }
 
