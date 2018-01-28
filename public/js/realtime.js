@@ -116,19 +116,30 @@ $(document).ready(function() {
 
 
     soc.on("PLAYER1_SCORE", function(){
-
-        player1Paddle.setScore();
+        if(clientNumber == 2)
+            player1Paddle.setScore();
+        else
+            player2Paddle.setScore();
         if(player1Paddle.score == 7){
-            alert("Player 1 Won the game!");
-            blur.show();
+            alert("You won!");
+            location.reload();
+        } else if(player2Paddle.score == 7){
+            alert("You lost!");
+            location.reload();
         }
     });
 
     soc.on("PLAYER2_SCORE", function(){
-        player2Paddle.setScore();
+        if(clientNumber == 1)
+            player1Paddle.setScore();
+        else
+            player2Paddle.setScore();
         if(player2Paddle.score == 7){
-            alert("Player 1 Won the game!");
-            blur.show();
+            alert("You won!");
+            location.reload();
+        } else if(player1Paddle.score == 7){
+            alert("You lost!");
+            location.reload();
         }
     });
 

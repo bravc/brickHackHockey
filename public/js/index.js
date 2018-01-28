@@ -327,13 +327,13 @@ function drawHockeyRink() {
     //player 1 paddle
     ctx.beginPath();
     ctx.arc(player1Paddle.x, player1Paddle.y, player1Paddle.radius, 0, 2 * Math.PI);
-    ctx.drawImage(paddleImg, player1Paddle.x - player1Paddle.radius, player1Paddle.y - player1Paddle.radius);
+    ctx.drawImage(paddleImg, player1Paddle.x - player1Paddle.radius, player1Paddle.y - player1Paddle.radius, 80, 80);
     ctx.closePath();
 
     //player 2 paddle
     ctx.beginPath();
     ctx.arc(player2Paddle.x, player2Paddle.y, player2Paddle.radius, 0, 2 * Math.PI);
-    ctx.drawImage(paddleImg, player2Paddle.x - player2Paddle.radius, player2Paddle.y - player2Paddle.radius);
+    ctx.drawImage(paddleImg, player2Paddle.x - player2Paddle.radius, player2Paddle.y - player2Paddle.radius, 80, 80);
     ctx.closePath();
 
 
@@ -343,7 +343,7 @@ function drawHockeyRink() {
     //puck
     ctx.beginPath();
     ctx.arc(puck.x, puck.y, puck.radius, 0, 2 * Math.PI);
-    ctx.drawImage(puckImg, puck.x - puck.radius, puck.y - puck.radius);
+    ctx.drawImage(puckImg, puck.x - puck.radius, puck.y - puck.radius, 30, 30);
     ctx.closePath();
 
     if(typeof otherWidth == 'undefined' && !devMode)
