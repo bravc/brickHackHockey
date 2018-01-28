@@ -117,7 +117,7 @@ class Paddle {
     setScore(){
         this.score++;
     }
-    
+
     setPos(x, y){
 		if(this.player == 1){
 			this.previousX = this.x;
@@ -235,6 +235,8 @@ function getTouchPos(canvasDom, touchEvent) {
 $(document).ready(function() {
     canvas = document.getElementById("gameBoard");
     ctx = canvas.getContext("2d");
+
+
 
     //scale the canvas properly
     scaleCanvas(canvas, ctx, aspectRatio()[0], aspectRatio()[1]);
@@ -386,5 +388,5 @@ function drawHockeyRink() {
     ctx.closePath();
 
     puck.updatePosition();
-
+    StackBlur.canvasRGB(canvas, 0, 0, canvas.width, canvas.height, 120);
 }
