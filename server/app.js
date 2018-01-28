@@ -68,8 +68,8 @@ class Puck {
         let client1X = client1.x;
         let client1Y = client1.y;
 
-        let client2X = client2.x * canvasWidthRatio;
-        let client2Y = client2.y * canvasHeightRatio;
+        let client2X = client2.x;
+        let client2Y = client2.y;
 
 
         //console.log(`canvas1Width: ${canvas1Width}, canvas1Height: ${canvas1Height}, canvas2Width: ${canvas2Width}, canvas2Height: ${canvas2Height}, client1X: ${client1X}, client1Y: ${client1Y}, client2X: ${client2X}, client2Y: ${client2Y}`);
