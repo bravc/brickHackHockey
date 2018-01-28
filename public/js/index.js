@@ -112,6 +112,12 @@ class Paddle {
         this.score = 0;
         this.mass = 1;
     }
+
+
+    setScore(){
+        this.score++;
+    }
+    
     setPos(x, y){
 		if(this.player == 1){
 			this.previousX = this.x;
