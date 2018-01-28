@@ -2,10 +2,7 @@ let pixelRatio = window.devicePixelRatio;
 let devMode = true;
 
 const updateTime = 1/6*100;
-const minVelocity = 300;
-const wallReturn = 3;
-const accelerationConstant = 10000;
-const velocityMultiple = 1000;
+
 
 let canvas;
 let ctx;
@@ -147,9 +144,10 @@ class Paddle {
 
 			this.y = y;
 
+            console.log(`canvasWidth: ${canvas.width / devicePixelRatio}, canvasHeight: ${canvas.height / devicePixelRatio}, X: ${x}, Y: ${y}`);
 
 
-			soc.emit("MOVE_PADDLE", x, y);
+			soc.emit("MOVE_PADDLE", x, y, clientNumber);
 		} else {
 			let xRatio = canvas.width / devicePixelRatio / otherWidth;
 			let yRatio = canvas.height / devicePixelRatio / otherHeight;
@@ -159,120 +157,15 @@ class Paddle {
     }
 }
 
-//represents the puck
-class Puck {
-    constructor(x, y) {
+class Puck{
+    constructor(x, y, vX, vY){
         this.x = x;
         this.y = y;
-        this.vX = 0;
-        this.vY = 0;
-        this.xIsColiding = false;
-        this.yIsColiding = false;
-        this.deceleration = 0.005;
+        this.vX = vX;
+        this.vY = vY;
         this.radius = 15;
-        this.mass = 0.2;
-    }
-	setPosition(x,y){
-		if(this.x + this.radius >= canvas.width / devicePixelRatio && this.xIsColiding == false){
-			this.vX = -this.vX;
-			x -= wallReturn;
-			this.xIsColiding = true;
-		} else if(this.x - this.radius <= 0 && this.xIsColiding == false){
-			this.vX = -this.vX;
-			x += wallReturn;
-			this.xIsColiding = true;
-		} else {
-			this.xIsColiding = false;
-		}
-
-		if(this.y >= canvas.height / devicePixelRatio && this.yIsColiding == false){
-			this.vY = -this.vY;
-			y -= wallReturn;
-			this.yIsColiding = true;
-		} else if(this.y <= 0 && this.yIsColiding == false){
-
-            //Goal scored and puck replaced at center ice
-            if(this.x > ((canvas.width / devicePixelRatio / 4) + 5)
-                && this.x < ((canvas.width / devicePixelRatio * 3 / 4) - 5)){
-                    player1Paddle.setScore();
-                    this.vY = 0;
-                    this.vX = 0;
-                    y = canvas.height / devicePixelRatio / 2;
-                    x = canvas.width / devicePixelRatio / 2;
-            } else {
-                this.vY = -this.vY;
-                y += wallReturn;
-                this.yIsColiding = true;
-            }
-
-		} else {
-			this.yIsColiding = false;
-		}
-		this.x = x;
-		this.y = y;
-
-        //puck collision detection with paddle 1
-        let player1Dx = puck.x - player1Paddle.x;
-        let player1Dy = puck.y - player1Paddle.y;
-        let player1Radii = puck.radius + player1Paddle.radius;
-        if ( ( player1Dx * player1Dx )  + ( player1Dy * player1Dy ) < player1Radii * player1Radii){
-            if(!player1Paddle.isColiding){
-                let vX = (player1Paddle.x - player1Paddle.previousX) / (updateTime * velocityMultiple);
-                let vY = (player1Paddle.y - player1Paddle.previousY) / (updateTime * velocityMultiple);
-                puck.vX = vX * accelerationConstant;
-                puck.vY = vY * accelerationConstant;
-            }
-            player1Paddle.isColiding = true;
-        } else {
-            player1Paddle.isColiding = false;
-        }
-
-        //puck collision detection
-        let player2Dx = puck.x - player2Paddle.x;
-        let player2Dy = puck.y - player2Paddle.y;
-        let player2Radii = puck.radius + player2Paddle.radius;
-        if ( ( player2Dx * player2Dx )  + ( player2Dy * player2Dy ) < player2Radii * player2Radii ){
-            if(!player2Paddle.isColiding){
-                let vX = (player2Paddle.x - player2Paddle.previousX) / (updateTime * velocityMultiple);
-                let vY = (player2Paddle.y - player2Paddle.previousY) / (updateTime * velocityMultiple);
-                puck.vX = vX * accelerationConstant;
-                puck.vY = vY * accelerationConstant;
-            }
-            player2Paddle.isColiding = true;
-        } else {
-            player2Paddle.isColiding = false;
-        }
-	}
-    updatePosition(){
-
-        this.setPosition(this.x + this.vX, this.y + this.vY);
-
-	    //this acceleration calculations
-	    if(this.vX > 0){
-            if(this.vX - this.deceleration > minVelocity){
-                this.vX -= this.deceleration;
-            }
-        }
-	    else if(this.vX < 0){
-            if(this.vX + this.deceleration > -minVelocity){
-	    	  this.vX += this.deceleration;
-            }
-        }
-
-	    if(this.vY > 0){
-            if(this.vY - this.deceleration > minVelocity){
-                this.vY -= this.deceleration;
-            }
-	    } else if(this.vY < 0){
-            if(this.vY + this.deceleration > -minVelocity){
-                this.vY += this.deceleration;
-            }
-        }
     }
 }
-
-
-
 
 // Get the position of a touch relative to the canvas
 function getTouchPos(canvasDom, touchEvent) {
@@ -299,7 +192,7 @@ $(document).ready(function() {
     player2Paddle = new Paddle(canvas.width / devicePixelRatio / 2, 100, 2);
 
     //puck
-    puck = new Puck(canvas.width / devicePixelRatio / 2, canvas.height / devicePixelRatio / 2);
+    puck = new Puck(canvas.width / devicePixelRatio / 2, canvas.height / devicePixelRatio / 2, 0 ,0);
 
     //hide the login form inititally
     if (devMode) {
@@ -436,7 +329,6 @@ function drawHockeyRink() {
     ctx.drawImage(puckImg, puck.x - puck.radius, puck.y - puck.radius);
     ctx.closePath();
 
-    puck.updatePosition();
     if(typeof otherWidth == 'undefined' && !devMode)
         StackBlur.canvasRGB(canvas, 0, 0, canvas.width, canvas.height, 120);
 }

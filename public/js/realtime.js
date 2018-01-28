@@ -2,6 +2,8 @@ var socUrl = "/"
 let soc = io();
 let otherWidth, otherHeight;
 
+let clientNumber;
+
 
 $(document).ready(function() {
 
@@ -44,6 +46,7 @@ $(document).ready(function() {
     createBtn.on('click', function(){
         let roomName = createRoom.val();
         if(roomName != ''){
+            clientNumber = 1;
             soc.emit("ADD_ROOM", roomName, displayRoomID);
         }
     });
@@ -56,7 +59,8 @@ $(document).ready(function() {
      */
     joinBtn.on('click', function(){
         if(roomID.val() != ''){
-            soc.emit("CONNECT_ROOM", roomID.val(), gameboard.width / window.devicePixelRatio, gameboard.height / window.devicePixelRatio, hideForm );
+            clientNumber = 2;
+            soc.emit("CONNECT_ROOM", roomID.val(), gameboard.width / window.devicePixelRatio, gameboard.height / window.devicePixelRatio, player2Paddle.x, player2Paddle.y, hideForm);
         }else{
             alert("User does not exist!")
         }
@@ -76,7 +80,7 @@ $(document).ready(function() {
         otherWidth = width;
         console.log("Other players canvas " + width + "x" + height);
 
-        soc.emit("SEND_CANVAS", gameboard.width / window.devicePixelRatio, gameboard.height / window.devicePixelRatio);
+        soc.emit("SEND_CANVAS", gameboard.width / window.devicePixelRatio, gameboard.height / window.devicePixelRatio, player1Paddle.x, player1Paddle.y);
         blur.hide();
     });
 
@@ -113,13 +117,25 @@ $(document).ready(function() {
         player2Paddle.setScore();
     });
 
-    soc.on("CHANGE_PUCK", function(x, vX, y, vY){
-        let xRatio = canvas.width / devicePixelRatio / otherWidth;
-        let yRatio = canvas.height / devicePixelRatio / otherHeight;
-        puck.x = (otherWidth - x) * xRatio;
-        puck.y = (otherHeight - y) * yRatio;
-        // puck.vX = vX;
-        // puck.vY = vY;
+    soc.on("CHANGE_PUCK_1", function(x, vX, y, vY){
+        if(clientNumber == 1){
+            puck.x = canvas.width / devicePixelRatio - x;
+            puck.y = canvas.height / devicePixelRatio - y;
+
+            console.log(`x: ${x}, y: ${y} `);
+            puck.vX = vX;
+            puck.vY = vY;
+            //console.log(`X: ${puck.x}, Y: ${puck.y}, vX: ${puck.vX}, vY: ${puck.vY}`);
+        }
     });
+    soc.on("CHANGE_PUCK_2", function(x, vX, y, vY){
+        if(clientNumber == 2){
+            puck.x = x;
+            puck.y = y;
+            puck.vX = -vX;
+            puck.vY = -vY;
+        }
+    });
+
 
 });
