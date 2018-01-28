@@ -1,7 +1,7 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = true;
+let devMode = false;
 
-//const socket = require('./realtime');
+const updateTime = 1/6*100;
 
 let canvas;
 let ctx;
@@ -105,12 +105,19 @@ class Paddle {
     constructor(x, y, player) {
         this.x = x;
         this.y = y;
+        this.previousX = x;
+        this.previousY = y;
         this.player = player;
         this.radius = 40;
         this.score = 0;
+        this.mass = 1;
     }
     setPos(x, y){
 		if(this.player == 1){
+			this.previousX = this.x;
+			this.previousY = this.y;
+
+
 			if(x > canvas.width / devicePixelRatio - this.radius - 2){
     			x = canvas.width / devicePixelRatio - this.radius - 2;
 	    	}
@@ -134,12 +141,16 @@ class Paddle {
 			let dy = puck.y - this.y;
 			let radii = puck.radius + this.radius;
 			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ){
-				console.log("Collision");
+				let vX = (this.x - this.previousX) / (updateTime * 1000);
+				let vY = (this.y - this.previousY) / (updateTime * 1000);
 			}
 
 			soc.emit("MOVE_PADDLE", x, y);
 		} else {
-
+			let xRatio = canvas.width / devicePixelRatio / otherWidth;
+			let yRatio = canvas.height / devicePixelRatio / otherHeight;
+			this.x = (otherWidth - x) * xRatio;
+			this.y = (otherHeight - y) * yRatio;
 		}
     }
 }
@@ -153,6 +164,7 @@ class Puck {
         this.vY = 0;
         this.acceleration = -0.2;
         this.radius = 15;
+        this.mass = 0.2;
     }
     setX(x){
     	this.x = x;
@@ -197,7 +209,7 @@ $(document).ready(function() {
 
 
     //start the canvas updates
-    timer = setInterval(drawHockeyRink, 1/6*100);
+    timer = setInterval(drawHockeyRink, updateTime);
 
 
     // Set up touch events for mobile, etc
