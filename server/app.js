@@ -25,7 +25,7 @@ let openRooms = {};
 let roomID = 0;
 
 let canvas1,
-    canvas2;
+canvas2;
 
 class Paddle{
     constructor(x, y){
@@ -68,8 +68,8 @@ class Puck {
         let client1X = client1.x;
         let client1Y = client1.y;
 
-        let client2X = client2.x * canvasWidthRatio;
-        let client2Y = client2.y * canvasHeightRatio;
+        let client2X = client2.x;
+        let client2Y = client2.y;
 
 
         //console.log(`canvas1Width: ${canvas1Width}, canvas1Height: ${canvas1Height}, canvas2Width: ${canvas2Width}, canvas2Height: ${canvas2Height}, client1X: ${client1X}, client1Y: ${client1Y}, client2X: ${client2X}, client2Y: ${client2Y}`);
@@ -93,41 +93,41 @@ class Puck {
             //Goal scored and puck replaced at center ice
             if(this.x > ((canvas1Width / 4) + 5)
                 && this.x < ((canvas1Width * 3 / 4) - 5)){
-                    console.log("Player 2 Goal!");
+                console.log("Player 2 Goal!");
 
-                    io.in(roomID).emit("PLAYER2_SCORE");
-                    this.vY = 0;
-                    this.vX = 0;
-                    y = canvas1Height / 2;
-                    x = canvas1Width / 2;
-            } else {
-                this.vY = -this.vY;
-                y -= wallReturn;
-                this.yIsColiding = true;
-            }
-        } else if(this.y <= 0 && this.yIsColiding == false){
+            io.in(roomID).emit("PLAYER2_SCORE");
+            this.vY = 0;
+            this.vX = 0;
+            y = canvas1Height / 2;
+            x = canvas1Width / 2;
+        } else {
+            this.vY = -this.vY;
+            y -= wallReturn;
+            this.yIsColiding = true;
+        }
+    } else if(this.y <= 0 && this.yIsColiding == false){
 
             //Goal scored and puck replaced at center ice
             if(this.x > ((canvas1Width / 4) + 5)
                 && this.x < ((canvas1Width * 3 / 4) - 5)){
-                    console.log("Player 1 Goal!");
+                console.log("Player 1 Goal!");
 
-                    io.in(roomID).emit("PLAYER1_SCORE");
-                    this.vY = 0;
-                    this.vX = 0;
-                    y = canvas1Height / 2;
-                    x = canvas1Width / 2;
-            } else {
-                this.vY = -this.vY;
-                y += wallReturn;
-                this.yIsColiding = true;
-            }
-
+            io.in(roomID).emit("PLAYER1_SCORE");
+            this.vY = 0;
+            this.vX = 0;
+            y = canvas1Height / 2;
+            x = canvas1Width / 2;
         } else {
-            this.yIsColiding = false;
+            this.vY = -this.vY;
+            y += wallReturn;
+            this.yIsColiding = true;
         }
-        this.x = x;
-        this.y = y;
+
+    } else {
+        this.yIsColiding = false;
+    }
+    this.x = x;
+    this.y = y;
 
         //puck collision detection with paddle 1
         let player1Dx = puck.x - client1X;
@@ -161,7 +161,6 @@ class Puck {
             //console.log(`puckX: ${x}, puckY: ${y}, player2Dx: ${player2Dx}, player2Dy: ${player2Dy}`);
             client2.isColiding = true;
             //console.log("CLIENT 2 COLIDING");
-            debugger;
         } else {
             client2.isColiding = false;
         }
@@ -179,19 +178,19 @@ class Puck {
         else if(this.vX < 0){
             if(this.vX + this.deceleration > -minVelocity){
               this.vX += this.deceleration;
-            }
-        }
+          }
+      }
 
-        if(this.vY > 0){
-            if(this.vY - this.deceleration > minVelocity){
-                this.vY -= this.deceleration;
-            }
-        } else if(this.vY < 0){
-            if(this.vY + this.deceleration > -minVelocity){
-                this.vY += this.deceleration;
-            }
+      if(this.vY > 0){
+        if(this.vY - this.deceleration > minVelocity){
+            this.vY -= this.deceleration;
+        }
+    } else if(this.vY < 0){
+        if(this.vY + this.deceleration > -minVelocity){
+            this.vY += this.deceleration;
         }
     }
+}
 }
 
 let client1;
@@ -211,7 +210,7 @@ io.on('connection', function(socket){
      * Create a new room with a size of one
      * and callback to the client with the new roomID
      */
-    socket.on('ADD_ROOM', function(roomName, callback){
+     socket.on('ADD_ROOM', function(roomName, callback){
         roomID = roomName;
         openRooms[roomID] = 1;
         socket.join(roomID);
@@ -224,7 +223,7 @@ io.on('connection', function(socket){
      * alert the client. Otherwise, join the room
      * and enter the game
      */
-    socket.on('CONNECT_ROOM', function(roomID, width, height, paddle2X, paddle2Y, callback){
+     socket.on('CONNECT_ROOM', function(roomID, width, height, paddle2X, paddle2Y, callback){
         if (roomID in openRooms) {
             if(openRooms[roomID] < 2){
                 openRooms[roomID] = 2;
@@ -247,7 +246,7 @@ io.on('connection', function(socket){
      * Exit the room
      * alert the other member of the room
      */
-    socket.on('disconnect', function(){
+     socket.on('disconnect', function(){
         if (roomID !== 0) {
             socket.to(roomID).emit('EXIT_ROOM');
             socket.leave(roomID);
@@ -258,7 +257,7 @@ io.on('connection', function(socket){
     /**
      * Send canvas to other player
      */
-    socket.on("SEND_CANVAS", function(width, height, paddleX, paddleY){
+     socket.on("SEND_CANVAS", function(width, height, paddleX, paddleY){
         canvas1 = [width, height];
         puck = new Puck(width / 2, height / 2);
         console.log("" + width / 2 + "," + height /2);
@@ -269,7 +268,7 @@ io.on('connection', function(socket){
     /**
      * Move paddle on opponent screen
      */
-    socket.on("MOVE_PADDLE", function(x ,y, clientNumber){
+     socket.on("MOVE_PADDLE", function(x ,y, clientNumber){
         if(clientNumber == 1 && client1){
             client1.previousX = client1.x;
             client1.previousY = client1.y;

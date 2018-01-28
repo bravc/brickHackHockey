@@ -121,8 +121,11 @@ $(document).ready(function() {
         else
             player2Paddle.setScore();
         if(player1Paddle.score == 7){
-            alert("Player 1 Won the game!");
-            blur.show();
+            alert("You won!");
+            location.reload();
+        } else if(player2Paddle.score == 7){
+            alert("You lost!");
+            location.reload();
         }
     });
 
@@ -132,8 +135,11 @@ $(document).ready(function() {
         else
             player2Paddle.setScore();
         if(player2Paddle.score == 7){
-            alert("Player 1 Won the game!");
-            blur.show();
+            alert("You won!");
+            location.reload();
+        } else if(player1Paddle.score == 7){
+            alert("You lost!");
+            location.reload();
         }
     });
 
