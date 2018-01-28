@@ -64,7 +64,7 @@ $(document).ready(function() {
         }
     });
 
-    
+
     soc.on('connect', function(){
         console.log('Connected...');
     });
@@ -104,6 +104,15 @@ $(document).ready(function() {
         otherHeight = height;
         otherWidth = width;
         console.log("Other players canvas " + width + height);
+    });
+
+
+    soc.on("PLAYER1_SCORE", function(){
+        //update player 1 score
+    });
+
+    soc.on("PLAYER2_SCORE", function(){
+        //update player 2 score
     });
 
 });
