@@ -1,5 +1,5 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = false;
+let devMode = true;
 
 const updateTime = 1/6*100;
 const minVelocity = 300;
@@ -414,28 +414,26 @@ function drawHockeyRink() {
 	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 2
 	ctx.restore();
 
-    //paddle color
-    ctx.fillStyle = "#3498db";
+    //Get paddle and puck images
+    let paddleImg=document.getElementById("paddle");
+    let puckImg=document.getElementById("puck");
 
     //player 1 paddle
     ctx.beginPath();
     ctx.arc(player1Paddle.x, player1Paddle.y, player1Paddle.radius, 0, 2 * Math.PI);
-    ctx.fill();
+    ctx.drawImage(paddleImg, player1Paddle.x - player1Paddle.radius, player1Paddle.y - player1Paddle.radius);
     ctx.closePath();
 
     //player 2 paddle
     ctx.beginPath();
     ctx.arc(player2Paddle.x, player2Paddle.y, player2Paddle.radius, 0, 2 * Math.PI);
-    ctx.fill();
+    ctx.drawImage(paddleImg, player2Paddle.x - player2Paddle.radius, player2Paddle.y - player2Paddle.radius);
     ctx.closePath();
-
-    //puck color
-    ctx.fillStyle = "#ff4757";
 
     //puck
     ctx.beginPath();
     ctx.arc(puck.x, puck.y, puck.radius, 0, 2 * Math.PI);
-    ctx.fill();
+    ctx.drawImage(puckImg, puck.x - puck.radius, puck.y - puck.radius);
     ctx.closePath();
 
     puck.updatePosition();

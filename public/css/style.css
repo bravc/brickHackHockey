@@ -105,6 +105,26 @@ button span:after{
   	transition: 0.3s;
 }
 
+#credits{
+	color: white;
+	text-align: center;
+	font-size: 8px;
+}
+
+#credits a{
+	color: white;
+}
+
+#credits a:hover{
+	color:white;
+	text-decoration: none;
+}
+
+#credits a:pressed{
+	color: white;
+	text-decoration: white;
+}
+
 #currRoomID{
 	text-align: center;
 	color: white;
