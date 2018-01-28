@@ -186,12 +186,13 @@ class Puck {
 			this.yIsColiding = true;
 		} else if(this.y <= 0 && this.yIsColiding == false){
 
-            if(this.x > (canvas.width / 4) && (this.x < canvas.height * 3 / 4)){
-                player1Paddle.setScore();
-                this.vY = 0;
-                this.vX = 0;
-                y = canvas.height / devicePixelRatio / 2;
-                x = canvas.width / devicePixelRatio / 2;
+            if(this.x > ((canvas.width / devicePixelRatio / 4) + 5)
+                && this.x < ((canvas.width / devicePixelRatio * 3 / 4) - 5)){
+                    player1Paddle.setScore();
+                    this.vY = 0;
+                    this.vX = 0;
+                    y = canvas.height / devicePixelRatio / 2;
+                    x = canvas.width / devicePixelRatio / 2;
             } else {
                 this.vY = -this.vY;
                 y += 10;
