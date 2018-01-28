@@ -89,13 +89,28 @@ class Puck {
         if(this.y >= canvas1Height && this.yIsColiding == false){
             this.vY = -this.vY;
             y -= wallReturn;
-            this.yIsColiding = true;
+
+            //Goal scored and puck replaced at center ice
+            if(this.x > ((canvas1Width / 4) + 5)
+                && this.x < ((canvas1Width * 3 / 4) - 5)){
+                    console.log("Player 2 Goal!");
+
+                    io.in(roomID).emit("PLAYER2_SCORE");
+                    this.vY = 0;
+                    this.vX = 0;
+                    y = canvas1Height / 2;
+                    x = canvas1Width / 2;
+            } else {
+                this.vY = -this.vY;
+                y -= wallReturn;
+                this.yIsColiding = true;
+            }
         } else if(this.y <= 0 && this.yIsColiding == false){
 
             //Goal scored and puck replaced at center ice
             if(this.x > ((canvas1Width / 4) + 5)
                 && this.x < ((canvas1Width * 3 / 4) - 5)){
-                    console.log("Goal! ");
+                    console.log("Player 1 Goal!");
 
                     io.in(roomID).emit("PLAYER1_SCORE");
                     this.vY = 0;
