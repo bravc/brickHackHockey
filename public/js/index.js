@@ -206,10 +206,6 @@ class Puck {
 			this.yIsColiding = false;
 		}
 		this.x = x;
-<<<<<<< HEAD
-        this.y = y;
-
-=======
 		this.y = y;
 
         //puck collision detection with paddle 1
@@ -243,27 +239,12 @@ class Puck {
         } else {
             player2Paddle.isColiding = false;
         }
->>>>>>> 7a04aba421b25a72133e87a0bbf54349ddc24bac
 	}
     updatePosition(){
 
         this.setPosition(this.x + this.vX, this.y + this.vY);
 
 	    //this acceleration calculations
-<<<<<<< HEAD
-	    if(this.vX > 0)
-	    	this.vX -= this.acceleration;
-	    else if(this.vX < 0)
-	    	this.vX += this.acceleration;
-
-	    if(this.vY > 0)
-	    	this.vY -= this.acceleration;
-	    else if(this.vY < 0)
-            this.vY += this.acceleration;
-        
-        soc.emit("PUCK_CHANGE", this.x, this.vX, this.y, this.vY);
-
-=======
 	    if(this.vX > 0){
             if(this.vX - this.acceleration > minVelocity){
                 this.vX -= this.acceleration;
@@ -284,7 +265,6 @@ class Puck {
                 this.vY += this.acceleration;
             }
         }
->>>>>>> af36be14f5de36b30a82b2182990989e76bec6e1
     }
 }
 
