@@ -168,7 +168,7 @@ class Puck {
         this.vY = 0;
         this.xIsColiding = false;
         this.yIsColiding = false;
-        this.acceleration = 0.005;
+        this.deceleration = 0.005;
         this.radius = 15;
         this.mass = 0.2;
     }
@@ -249,23 +249,23 @@ class Puck {
 
 	    //this acceleration calculations
 	    if(this.vX > 0){
-            if(this.vX - this.acceleration > minVelocity){
-                this.vX -= this.acceleration;
+            if(this.vX - this.deceleration > minVelocity){
+                this.vX -= this.deceleration;
             }
         }
 	    else if(this.vX < 0){
-            if(this.vX + this.acceleration > -minVelocity){
-	    	  this.vX += this.acceleration;
+            if(this.vX + this.deceleration > -minVelocity){
+	    	  this.vX += this.deceleration;
             }
         }
 
 	    if(this.vY > 0){
-            if(this.vY - this.acceleration > minVelocity){
-                this.vY -= this.acceleration;
+            if(this.vY - this.deceleration > minVelocity){
+                this.vY -= this.deceleration;
             }
 	    } else if(this.vY < 0){
-            if(this.vY + this.acceleration > -minVelocity){
-                this.vY += this.acceleration;
+            if(this.vY + this.deceleration > -minVelocity){
+                this.vY += this.deceleration;
             }
         }
     }
