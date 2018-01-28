@@ -1,5 +1,5 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = false;
+let devMode = true;
 
 const updateTime = 1/6*100;
 
@@ -111,13 +111,14 @@ class Paddle {
         this.radius = 40;
         this.score = 0;
         this.mass = 1;
+        this.isColiding = false;
     }
 
 
     setScore(){
         this.score++;
     }
-    
+
     setPos(x, y){
 		if(this.player == 1){
 			this.previousX = this.x;
@@ -142,16 +143,7 @@ class Paddle {
 
 			this.y = y;
 
-			//puck collision detection
-			let dx = puck.x - this.x;
-			let dy = puck.y - this.y;
-			let radii = puck.radius + this.radius;
-			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ){
-				let vX = (this.x - this.previousX) / (updateTime * 1000);
-				let vY = (this.y - this.previousY) / (updateTime * 1000);
-				puck.vX = vX * 10000;
-				puck.vY = vY * 10000;
-			}
+
 
 			soc.emit("MOVE_PADDLE", x, y);
 		} else {
@@ -194,15 +186,62 @@ class Puck {
 			y -= 10;
 			this.yIsColiding = true;
 		} else if(this.y <= 0 && this.yIsColiding == false){
-			this.vY = -this.vY;
-			y += 10;
-			this.yIsColiding = true;
+
+            if(this.x > ((canvas.width / devicePixelRatio / 4) + 5)
+                && this.x < ((canvas.width / devicePixelRatio * 3 / 4) - 5)){
+                    player1Paddle.setScore();
+                    this.vY = 0;
+                    this.vX = 0;
+                    y = canvas.height / devicePixelRatio / 2;
+                    x = canvas.width / devicePixelRatio / 2;
+            } else {
+                this.vY = -this.vY;
+                y += 10;
+                this.yIsColiding = true;
+            }
+
 		} else {
 			this.yIsColiding = false;
 		}
 		this.x = x;
+<<<<<<< HEAD
         this.y = y;
 
+=======
+		this.y = y;
+
+        //puck collision detection with paddle 1
+        let player1Dx = puck.x - player1Paddle.x;
+        let player1Dy = puck.y - player1Paddle.y;
+        let player1Radii = puck.radius + player1Paddle.radius;
+        if ( ( player1Dx * player1Dx )  + ( player1Dy * player1Dy ) < player1Radii * player1Radii){
+            if(!player1Paddle.isColiding){
+                let vX = (player1Paddle.x - player1Paddle.previousX) / (updateTime * 1000);
+                let vY = (player1Paddle.y - player1Paddle.previousY) / (updateTime * 1000);
+                puck.vX = vX * 10000;
+                puck.vY = vY * 10000;
+            }
+            player1Paddle.isColiding = true;
+        } else {
+            player1Paddle.isColiding = false;
+        }
+
+        //puck collision detection
+        let player2Dx = puck.x - player2Paddle.x;
+        let player2Dy = puck.y - player2Paddle.y;
+        let player2Radii = puck.radius + player2Paddle.radius;
+        if ( ( player2Dx * player2Dx )  + ( player2Dy * player2Dy ) < player2Radii * player2Radii ){
+            if(!player2Paddle.isColiding){
+                let vX = (player2Paddle.x - player2Paddle.previousX) / (updateTime * 1000);
+                let vY = (player2Paddle.y - player2Paddle.previousY) / (updateTime * 1000);
+                puck.vX = vX * 10000;
+                puck.vY = vY * 10000;
+            }
+            player2Paddle.isColiding = true;
+        } else {
+            player2Paddle.isColiding = false;
+        }
+>>>>>>> 7a04aba421b25a72133e87a0bbf54349ddc24bac
 	}
     updatePosition(){
 
@@ -239,6 +278,8 @@ function getTouchPos(canvasDom, touchEvent) {
 $(document).ready(function() {
     canvas = document.getElementById("gameBoard");
     ctx = canvas.getContext("2d");
+
+
 
     //scale the canvas properly
     scaleCanvas(canvas, ctx, aspectRatio()[0], aspectRatio()[1]);
@@ -361,8 +402,8 @@ function drawHockeyRink() {
 	ctx.textAlign = "center";
 	ctx.font = "30px Arial";
 	ctx.fillStyle = "#FFFFFF"; //score font color
-	ctx.fillText(player1Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 1
-	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 + 20, 10); //player 2
+	ctx.fillText(player1Paddle.score.toString(), normalizedHeight / 2 + 20, 10); //player 1
+	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 2
 	ctx.restore();
 
     //paddle color
@@ -390,5 +431,6 @@ function drawHockeyRink() {
     ctx.closePath();
 
     puck.updatePosition();
-
+    if(!devMode)
+        StackBlur.canvasRGB(canvas, 0, 0, canvas.width, canvas.height, 120);
 }
