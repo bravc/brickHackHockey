@@ -130,8 +130,8 @@ class Puck {
     this.y = y;
 
         //puck collision detection with paddle 1
-        let player1Dx = puck.x - client1X;
-        let player1Dy = puck.y - client1Y;
+        let player1Dx = puck.x - (canvas1Width - client1X);
+        let player1Dy = puck.y - (canvas1Height - client1Y);
         let player1Radii = puck.radius + client1.radius;
         if ( ( player1Dx * player1Dx )  + ( player1Dy * player1Dy ) < player1Radii * player1Radii){
             if(!client1.isColiding){
@@ -153,8 +153,8 @@ class Puck {
         let player2Radii = puck.radius + client2.radius;
         if ( ( player2Dx * player2Dx )  + ( player2Dy * player2Dy ) < player2Radii * player2Radii ){
             if(!client2.isColiding){
-                let vX = (client2.previousX - client2X) / (updateTime * velocityMultiple);
-                let vY = (client2.previousY - client2Y) / (updateTime * velocityMultiple);
+                let vX = (client2X - client2.previousX) / (updateTime * velocityMultiple);
+                let vY = (client2Y - client2.previousY * canvasHeightRatio) / (updateTime * velocityMultiple);
                 puck.vX = vX * accelerationConstant;
                 puck.vY = vY * accelerationConstant;
             }
