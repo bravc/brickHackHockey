@@ -62,8 +62,8 @@ class Puck {
         let canvas2Width = canvas2[0];
         let canvas2Height = canvas2[1];
 
-        let canvasWidthRatio = canvas1Width / canvas2Width;
-        let canvasHeightRatio = canvas1Height / canvas2Height;
+        let canvasWidthRatio = canvas1Width / canvas1Width;
+        let canvasHeightRatio = canvas1Height / canvas1Height;
 
         let client1X = client1.x;
         let client1Y = client1.y;
