@@ -2,6 +2,7 @@ let pixelRatio = window.devicePixelRatio;
 let devMode = true;
 
 const updateTime = 1/6*100;
+const minVelocity = 300;
 
 let canvas;
 let ctx;
@@ -245,22 +246,22 @@ class Puck {
 
 	    //this acceleration calculations
 	    if(this.vX > 0){
-            if(this.vX - this.acceleration > 300){
+            if(this.vX - this.acceleration > minVelocity){
                 this.vX -= this.acceleration;
             }
         }
 	    else if(this.vX < 0){
-            if(this.vX + this.acceleration > -300){
+            if(this.vX + this.acceleration > -minVelocity){
 	    	  this.vX += this.acceleration;
             }
         }
 
 	    if(this.vY > 0){
-            if(this.vY - this.acceleration > 300){
+            if(this.vY - this.acceleration > minVelocity){
                 this.vY -= this.acceleration;
             }
 	    } else if(this.vY < 0){
-            if(this.vY + this.acceleration > -300){
+            if(this.vY + this.acceleration > -minVelocity){
                 this.vY += this.acceleration;
             }
         }
