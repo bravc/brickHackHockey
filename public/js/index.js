@@ -149,6 +149,8 @@ class Paddle {
 			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ){
 				let vX = (this.x - this.previousX) / (updateTime * 1000);
 				let vY = (this.y - this.previousY) / (updateTime * 1000);
+				puck.vX = vX * 10000;
+				puck.vY = vY * 10000;
 			}
 
 			soc.emit("MOVE_PADDLE", x, y);
@@ -168,15 +170,53 @@ class Puck {
         this.y = y;
         this.vX = 0;
         this.vY = 0;
-        this.acceleration = -0.2;
+        this.xIsColiding = false;
+        this.yIsColiding = false;
+        this.acceleration = 0.005;
         this.radius = 15;
         this.mass = 0.2;
     }
-    setX(x){
-    	this.x = x;
-    }
-    setY(y){
-    	this.y = y;
+	setPosition(x,y){
+		if(this.x + this.radius >= canvas.width / devicePixelRatio && this.xIsColiding == false){
+			this.vX = -this.vX;
+			x -= 10;
+			this.xIsColiding = true;
+		} else if(this.x - this.radius <= 0 && this.xIsColiding == false){
+			this.vX = -this.vX;
+			x += 10;
+			this.xIsColiding = true;
+		} else {
+			this.xIsColiding = false;
+		}
+
+		if(this.y >= canvas.height / devicePixelRatio && this.yIsColiding == false){
+			this.vY = -this.vY;
+			y -= 10;
+			this.yIsColiding = true;
+		} else if(this.y <= 0 && this.yIsColiding == false){
+			this.vY = -this.vY;
+			y += 10;
+			this.yIsColiding = true;
+		} else {
+			this.yIsColiding = false;
+		}
+		this.x = x;
+		this.y = y;
+	}
+    updatePosition(){
+
+    	this.setPosition(this.x + this.vX, this.y + this.vY);
+
+	    //this acceleration calculations
+	    if(this.vX > 0)
+	    	this.vX -= this.acceleration;
+	    else if(this.vX < 0)
+	    	this.vX += this.acceleration;
+
+	    if(this.vY > 0)
+	    	this.vY -= this.acceleration;
+	    else if(this.vY < 0)
+	    	this.vY += this.acceleration;
     }
 }
 
@@ -262,8 +302,8 @@ function drawHockeyRink() {
     //draw in arena
 
     //white background
-    ctx.strokeStyle = "#FF0000";
-    ctx.fillStyle = "#FFFFFF";
+    ctx.strokeStyle = "#0000FF";
+    ctx.fillStyle = "#000000";
     ctx.lineWidth = 4;
     roundRect(ctx, 2, 2, normalizedWidth - 4, normalizedHeight - 4, 25, true, true);
 
@@ -277,8 +317,8 @@ function drawHockeyRink() {
 
     //player 1 goal line
     ctx.beginPath();
-    ctx.moveTo(goalStart, normalizedHeight - 2);
-    ctx.lineTo(goalEnd, normalizedHeight - 2);
+    ctx.moveTo(goalStart, normalizedHeight);
+    ctx.lineTo(goalEnd, normalizedHeight);
     ctx.stroke();
     ctx.closePath();
 
@@ -289,10 +329,18 @@ function drawHockeyRink() {
     ctx.stroke();
     ctx.closePath();
 
+    ctx.strokeStyle = "FF0000";
+    ctx.lineWidth = 4;
+
+    //center-ice Circle
+    ctx.beginPath();
+    ctx.arc(normalizedWidth / 2, normalizedHeight / 2, normalizedWidth / 4, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.closePath();
 
     //centerline color and width
     ctx.strokeStyle = "#FF0000";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 4;
 
     //centerline
     ctx.beginPath()
@@ -308,13 +356,13 @@ function drawHockeyRink() {
 	ctx.rotate(Math.PI/2);
 	ctx.textAlign = "center";
 	ctx.font = "30px Arial";
-	ctx.fillStyle = "#000000"; //score font color
+	ctx.fillStyle = "#FFFFFF"; //score font color
 	ctx.fillText(player1Paddle.score.toString(), normalizedHeight / 2 - 20, 10); //player 1
 	ctx.fillText(player2Paddle.score.toString(), normalizedHeight / 2 + 20, 10); //player 2
 	ctx.restore();
 
     //paddle color
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = "#3498db";
 
     //player 1 paddle
     ctx.beginPath();
@@ -329,7 +377,7 @@ function drawHockeyRink() {
     ctx.closePath();
 
     //puck color
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "#ff4757";
 
     //puck
     ctx.beginPath();
@@ -337,11 +385,6 @@ function drawHockeyRink() {
     ctx.fill();
     ctx.closePath();
 
-    //puck velocity calculations
-    puck.x += puck.vX;
-    puck.y += puck.vY;
+    puck.updatePosition();
 
-    //puck acceleration calculations
-    puck.Vx += puck.acceleration;
-    puck.Vy += puck.acceleration;
 }
