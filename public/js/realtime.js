@@ -100,7 +100,7 @@ $(document).ready(function() {
      */
     soc.on("EXIT_ROOM", function(){
         alert("User left!");
-        blur.show();
+        location.reload();
     });
 
     /**
