@@ -1,5 +1,6 @@
 var socUrl = "/"
 let soc = io();
+let otherWidth, otherHeight;
 
 
 $(document).ready(function() {
@@ -10,6 +11,9 @@ $(document).ready(function() {
         joinBtn = $('#roomEnterButton'),
         display = $('#currRoomID'),
         blur = $('#blur');
+
+
+    let gameboard = document.getElementById('gameBoard');
 
     /**
      * Displays the created roomID on the page to give to friends
@@ -52,7 +56,7 @@ $(document).ready(function() {
      */
     joinBtn.on('click', function(){
         if(roomID.val() != ''){
-            soc.emit("CONNECT_ROOM", roomID.val(), hideForm);
+            soc.emit("CONNECT_ROOM", roomID.val(), gameboard.width / window.devicePixelRatio, gameboard.height / window.devicePixelRatio, hideForm );
         }else{
             alert("User does not exist!")
         }
@@ -65,17 +69,29 @@ $(document).ready(function() {
      * When both parties have joined,
      * hide the menu
      */
-    soc.on("ENTER_GAME", function(){
+    soc.on("ENTER_GAME", function(width, height){
+        otherHeight = height;
+        otherWidth = width;
+        console.log("Other players canvas " + width + "x" + height);
+
+        soc.emit("SEND_CANVAS", gameboard.width / window.devicePixelRatio, gameboard.height / window.devicePixelRatio);
         blur.hide();
     });
 
-    soc.on("OPPONENT_PUCK_MOVE", function(x, y){
+    //
+    soc.on("OPPONENT_PADDLE_MOVE", function(x, y){
         player2Paddle.setPos(x, y);
     });
 
     soc.on("EXIT_ROOM", function(){
         alert("User left!");
         blur.show();
+    });
+
+    soc.on("PLAYER1_CANVAS", function(width, height){
+        otherHeight = height;
+        otherWidth = width;
+        console.log("Other players canvas " + width + height);
     });
 
 });
