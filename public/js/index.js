@@ -1,5 +1,5 @@
 let pixelRatio = window.devicePixelRatio;
-let devMode = false;
+let devMode = true;
 
 const updateTime = 15;
 
@@ -252,11 +252,17 @@ function drawHockeyRink() {
 	let normalizedWidth = canvas.width / devicePixelRatio;
 	let normalizedHeight = canvas.height / devicePixelRatio;
 
+    //clear background
+    ctx.fillStyle = "#000000";
+    ctx.beginPath();
+    ctx.rect(0,0, normalizedWidth, normalizedHeight);
+    ctx.fill();
+    ctx.closePath();
+
     //draw in arena
 
     //white background
     ctx.strokeStyle = "#0000FF";
-    ctx.fillStyle = "#000000";
     ctx.lineWidth = 4;
     roundRect(ctx, 2, 2, normalizedWidth - 4, normalizedHeight - 4, 25, true, true);
 
@@ -321,13 +327,13 @@ function drawHockeyRink() {
     //player 1 paddle
     ctx.beginPath();
     ctx.arc(player1Paddle.x, player1Paddle.y, player1Paddle.radius, 0, 2 * Math.PI);
-    ctx.drawImage(paddleImg, player1Paddle.x - player1Paddle.radius, player1Paddle.y - player1Paddle.radius);
+    ctx.drawImage(paddleImg, player1Paddle.x - player1Paddle.radius, player1Paddle.y - player1Paddle.radius, 80, 80);
     ctx.closePath();
 
     //player 2 paddle
     ctx.beginPath();
     ctx.arc(player2Paddle.x, player2Paddle.y, player2Paddle.radius, 0, 2 * Math.PI);
-    ctx.drawImage(paddleImg, player2Paddle.x - player2Paddle.radius, player2Paddle.y - player2Paddle.radius);
+    ctx.drawImage(paddleImg, player2Paddle.x - player2Paddle.radius, player2Paddle.y - player2Paddle.radius, 80, 80);
     ctx.closePath();
 
 
@@ -337,7 +343,7 @@ function drawHockeyRink() {
     //puck
     ctx.beginPath();
     ctx.arc(puck.x, puck.y, puck.radius, 0, 2 * Math.PI);
-    ctx.drawImage(puckImg, puck.x - puck.radius, puck.y - puck.radius);
+    ctx.drawImage(puckImg, puck.x - puck.radius, puck.y - puck.radius, 30, 30);
     ctx.closePath();
 
     if(typeof otherWidth == 'undefined' && !devMode)
