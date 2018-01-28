@@ -137,9 +137,7 @@ class Paddle {
 				console.log("Collision");
 			}
 
-
-
-			soc.emit("MOVE_PUCK", x, y);
+			soc.emit("MOVE_PADDLE", x, y);
 		} else {
 
 		}
