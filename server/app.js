@@ -65,10 +65,16 @@ io.on('connection', function(socket){
         }
     });
 
+    /**
+     * Send canvas to other player
+     */
     socket.on("SEND_CANVAS", function(width, height){
         socket.broadcast.to(roomID).emit("PLAYER1_CANVAS", width, height);
     });
 
+    /**
+     * Move paddle on opponent screen
+     */
     socket.on("MOVE_PADDLE", function(x ,y){
         socket.broadcast.to(roomID).emit("OPPONENT_PADDLE_MOVE", x,y);
     });
