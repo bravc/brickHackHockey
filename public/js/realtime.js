@@ -106,11 +106,11 @@ $(document).ready(function() {
 
 
     soc.on("PLAYER1_SCORE", function(){
-        //update player 1 score
+        player1Paddle.setScore();
     });
 
     soc.on("PLAYER2_SCORE", function(){
-        //update player 2 score
+        player2Paddle.setScore();
     });
 
 });
