@@ -423,6 +423,6 @@ function drawHockeyRink() {
     ctx.closePath();
 
     puck.updatePosition();
-    if(typeof myVar == 'undefined' && !devMode)
+    if(typeof otherWidth == 'undefined' && !devMode)
         StackBlur.canvasRGB(canvas, 0, 0, canvas.width, canvas.height, 120);
 }
